@@ -1,0 +1,47 @@
+.Modal {
+    position : fixed;
+    height : 70%;
+    top : 15%;
+    bottom : 15%;
+    width : 80%;
+    left : 10%;
+    right : 10%;
+    z-index: 150;
+    background : white;
+
+    animation: loadFullPost 0.5s ease-out;
+}
+
+.Image_Container {
+    height : 100%;
+    width : 25%;
+    float : left;
+}
+
+.Image_Container img {
+    width : 95%;
+}
+
+.Post_Content, .Post_Heading {
+    float : left;
+    width : 75%;
+}
+
+.Post_Heading {
+    font-size : 1.4em;
+    font-weight : bold;
+}
+
+.Post_Content {
+    overflow : hidden;
+}
+
+@keyframes loadFullPost {
+    0% {
+        opacity : 0;
+    }
+
+    100% {
+        opacity: 100%;
+    }
+}

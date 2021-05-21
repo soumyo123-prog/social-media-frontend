@@ -1,0 +1,60 @@
+.Home {
+    width : 100%;
+    height : 100%;
+}
+
+/* Not authenticated */
+.isNot {
+    padding : 0;
+    margin-top : 100px;
+    position : relative;
+    height : 50px;
+    margin-bottom : 0;
+}
+
+.isNot li {
+    position: absolute;
+    width : 40%;
+    text-align : center;
+    display : inline-block;
+    background : #3dd178;
+    height : 50px;
+    font-style : italic;
+    z-index : 0;
+    box-shadow : 0 5px 10px black;
+
+    transition: all 0.2s ease-out;
+}
+
+.isNot li a {
+    text-decoration : none;
+    color : black;
+    font-size : 1.3em;
+    display : block;
+    width : 100%;
+    height : 100%;
+    padding : 10px;
+}
+
+.isNot li:nth-of-type(1) {
+    left : 0;
+    border-top-right-radius : 20px;
+    border-bottom-right-radius : 20px;
+}
+
+.isNot li:nth-of-type(2) {
+    right : 0;
+    border-top-left-radius : 20px;
+    border-bottom-left-radius : 20px;
+}
+
+.isNot li:hover {
+    width : 100%;
+    z-index : 20;
+}
+
+@media (max-width: 200px) {
+    .isNot li a {
+        font-size: 1.1em;;
+    }
+}

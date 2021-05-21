@@ -1,0 +1,98 @@
+.Settings_Container {
+    width : 100%;
+    height : 100%;
+    padding : 5px;
+}
+
+.Redirect_To_Profile {
+    height : 50px;
+    width : 100%;
+    position: relative;
+}
+
+.Redirect_To_Profile a {
+    display: block;
+    height : 50px;
+    width : 50px;
+    position: absolute;
+    right : 0;
+    border-radius : 50%;
+    border : 2px solid black;
+    text-align : center;
+    padding : 9px;
+    color : black;
+    text-decoration: none;
+    font-size : 1.3em;
+    font-weight: bold;
+}
+
+.Setting_Container {
+    text-align : center;
+    margin-top : 20px;
+    width : 70%;
+    border : 1px solid black;
+    margin-left : auto;
+    margin-right : auto;
+    font-size : 1.2em;
+}
+
+.Setting_Container div {
+    border : 1px solid black;
+}
+
+.Setting_Container div:hover {
+    cursor : pointer;
+    background : #f06156;
+    color : white;
+}
+
+.Update_Form {
+    width : 70%;
+    padding : 10px;
+}
+
+.Update_Form input {
+    margin : 10px;
+    display : block;
+    width : 100%;
+}
+
+.Delete {
+    width : 100%;
+    padding : 20px;
+}
+
+.Delete button {
+    display : inline-block;
+    width : 50%;
+    background : transparent;
+    border : 0;
+    font-size : 1.1em;
+    font-style: bold;
+    text-transform: uppercase;
+}
+
+.Delete button:hover {
+    cursor : pointer;
+}
+
+.Confirm {
+    color : green;
+}
+
+.Back {
+    color : red;
+}
+
+.ErrorMessage {
+    width : 100%;
+    height : 50px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    border : 1px solid black;
+    background-color : crimson;
+    color : white;
+    text-align : center;
+    padding : 10px;
+    margin-top : 30px;
+}

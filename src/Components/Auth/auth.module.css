@@ -1,0 +1,80 @@
+.Login_Form_Container {
+    width : 75%;
+    margin-right: auto;
+    margin-left: auto;
+    border : 1px solid black;
+    margin-top : 100px;
+    padding : 30px;
+    border-radius: 10px;
+    background-color: #ff9c38;
+}
+
+.Login_Form_Container input {
+    display : block;
+    width : 80%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 20px;
+    height : 40px;
+    background-color: #ff9c38;
+    border-right : 0;
+    border-left : 0;
+    border-top : 0;
+    border-bottom : 2px solid gray;
+    font-size : 1.1em;
+}
+
+.Login_Form_Container input:focus {
+    outline : 0;
+    border-bottom: 3px solid #10177a;
+}
+
+.Login_Form_Container button {
+    display : block;
+    width : 30%;
+    font-size : 1.1em;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius : 5px;
+    border : 0;
+    color : white;
+    background : #5962e3;
+    padding : 5px;
+}
+
+.Login_Form_Container button:focus {
+    outline : 0;
+}
+
+.Login_Form_Container button:hover {
+    cursor : pointer;
+}
+
+.Error_Message {
+    text-align : center;
+    width : 80%;
+    background : #f55858;
+    color : white;
+    height : 30px;
+    font-size : 1.3em;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top : 20px;
+    border-radius : 5px;
+}
+
+@media (max-width: 500px) {
+    .Login_Form_Container {
+        padding : 10px;
+    }
+
+    .Login_Form_Container input {
+        font-size : 4vw;
+        height : 30px;
+    }
+
+    .Login_Form_Container button {
+        width : 50%;
+        font-size : 4vw;
+    }
+}

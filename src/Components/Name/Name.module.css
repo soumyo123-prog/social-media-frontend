@@ -1,0 +1,22 @@
+.Company_Name {
+    width : 80%;
+    height : 5%;
+    font-size : 1.5em;
+    text-align : center;
+    background-color: #ff9c38;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin-left : auto;
+    margin-right : auto;
+}
+
+.Company_Name a {
+    color : black;
+    text-decoration : none;
+}
+
+@media (max-width : 300px) {
+    .Company_Name {
+        font-size : 1.2em;
+    }
+}

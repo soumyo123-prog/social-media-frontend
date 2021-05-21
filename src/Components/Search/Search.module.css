@@ -1,0 +1,88 @@
+.Search_Container {
+    width : 100%;
+    height : 100%;
+    padding : 20px;
+}
+
+.Redirect_To_Profile {
+    height : 50px;
+    width : 100%;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.Redirect_To_Profile button {
+    height : 50px;
+    width : 50px;
+    border-radius: 50%;
+    position: absolute;
+    right : 0;
+}
+
+.Redirect_To_Profile button:hover {
+    cursor: pointer;
+}
+
+.ErrorMessage {
+    float : left;
+    width : 100%;
+    height : 50px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    border : 1px solid black;
+    background-color : crimson;
+    color : white;
+    text-align : center;
+    padding : 10px;
+}
+
+.User {
+    display: block;
+    height : 75px;
+    width : 100%;
+    border : 1px solid black;
+    border-radius : 10px;
+    margin-bottom : 10px;
+    text-decoration: none;
+    color : black;
+}
+
+.User:hover {
+    cursor : pointer;
+    background-color : #a5e0f2;
+}
+
+.User_Avatar {
+    width : 25%;
+    height : 100%;
+    overflow : hidden;
+    float : left;
+}
+
+.User_Avatar img {
+    height : 100%;
+    border-radius: 10px;
+}
+
+.User_Details {
+    height : 100%;
+    width : 75%;
+    float : left;
+    text-align : center;
+    text-transform: capitalize;
+    padding : 20px;
+    font-size: 1.2em;
+}
+
+.Change_Buttons {
+    width : 10%;
+    margin-left : auto;
+    margin-right : auto;
+}
+
+.Change_Buttons button {
+    width : 50%;
+    font-size: 1.2em;
+    font-weight : bold;
+}
+
