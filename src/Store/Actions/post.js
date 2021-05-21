@@ -57,3 +57,9 @@ export const updateLikes = (id,type) => {
         id
     }
 }
+
+export const delWhileLogout = () => {
+	return {
+		type : actions.DEL_WHILE_LOGOUT
+	}
+}

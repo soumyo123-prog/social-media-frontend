@@ -1,0 +1,36 @@
+.Dragdrop_Container {
+	margin-bottom : 10px;
+	border-radius: 10px;
+	background-color : #ff9c38;
+	height : 200px; 
+	display : flex;
+	align-items : center;
+	justify-content : center;
+	flex-flow : column;
+}
+
+.Dragdrop_Container {
+	background-color : #ff9c38 !important;
+	color : black !important;
+}
+
+.Dragdrop_Container div:hover {
+	background-color : #ff9c38 ;
+	color : black ;
+}
+
+.IsDragging {
+	border : 5px dashed grey;
+}
+
+.Add_Avatar button {
+	display : block;
+	width : 50%;
+	margin-right: auto;
+	margin-left: auto;
+	border-radius : 5px;
+	border : 0;
+	color : white;
+	background : #5962e3;
+	padding : 5px;
+}

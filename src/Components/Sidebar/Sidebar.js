@@ -2,7 +2,24 @@ import React from 'react';
 import classes from './Sidebar.module.css';
 
 import {connect} from 'react-redux';
+import {withRouter, NavLink} from 'react-router-dom';
 import * as types from '../../Store/Actions/index';
+
+let searchContent = "'";
+
+const updateSearchQuery = (e) => {
+	searchContent  = e.target.value;
+}
+
+const searchSubmitHandler = (e,props) => {
+	e.preventDefault();
+	if (searchContent) {
+		const url = '/search?name=' + searchContent;
+		props.history.push(decodeURIComponent(url));
+	} else {
+		return;
+	}
+}
 
 const sidebar = props => {
 	let sideClass = [classes.Sidebar];
@@ -16,6 +33,25 @@ const sidebar = props => {
 		<ul
 			className = {sideClass.join(' ')}
 		>
+			<div className = {classes.Search_Bar}>
+				<form onSubmit = {(e) => searchSubmitHandler(e,props)}>
+					<input 
+						type = "text"
+						placeholder = "Username"
+						onChange={updateSearchQuery}
+					/>
+					<button> GO </button>
+				</form>
+			</div>
+
+			<li
+				className = {classes.Profile}
+			>
+				<NavLink to='/profile/me'> 
+					Profile 
+				</NavLink>
+			</li>
+
 			<li 
 				className = {classes.Logout}
 				onClick = {() => props.logoutInit("once",props.token)}
@@ -44,4 +80,4 @@ const mapDispatchToProps = dispatch => {
         }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(sidebar);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(sidebar));

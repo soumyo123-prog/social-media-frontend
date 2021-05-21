@@ -126,11 +126,13 @@ class Profile extends React.Component {
             }
         })
 
-        if (this.state.touchShow) {
-            doc.childNodes[doc.childNodes.length-1].style.display = 'block';
-        } else {
-            doc.childNodes[doc.childNodes.length-1].style.display = 'none';
-        }   
+	if (doc.childNodes) {
+		if (this.state.touchShow) {
+		doc.childNodes[doc.childNodes.length-1].style.display = 'block';
+		} else {
+		doc.childNodes[doc.childNodes.length-1].style.display = 'none';
+		}   
+	}
     }
 
     render () {

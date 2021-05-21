@@ -16,7 +16,8 @@ export {
     fetchPosts,
     deletePost,
     updatePosts,
-    updateLikes
+    updateLikes,
+    delWhileLogout
 } from './post';
 
 export {

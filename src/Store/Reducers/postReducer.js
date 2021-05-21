@@ -57,6 +57,14 @@ const updateLikes = (state,action) => {
     return prevState;
 }
 
+const delLogout = (state, action) => {
+	const prevState = state;
+	prevState.posts = [];
+	prevState.error = null;
+
+	return prevState;
+};
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actions.FETCHED_POSTS : return fetchPosts(state, action);
@@ -64,6 +72,7 @@ const reducer = (state = initialState, action) => {
         case actions.DELETE_POST : return deletePost(state, action);
         case actions.UPDATE_POSTS : return updatePosts(state, action);
         case actions.UPDATE_LIKES_SUCCESS : return updateLikes(state,action);
+	case actions.DEL_WHILE_LOGOUT : return delLogout(state, action);
 
         default : return state;
     }

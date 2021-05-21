@@ -220,3 +220,35 @@
     border-radius : 50%;
 }
 
+@media (max-width : 680px) {
+	.Avatar_Container {
+		float : none;
+		margin-left : auto;
+		margin-right: auto;
+	}
+
+	.Profile_Details {
+		float : none;
+		width : 100%;
+		height : auto;
+	}
+
+	.Post {
+		width : 100%;
+	}
+
+	.Like_Container {
+		width : 70%;
+	}
+
+	.FullPost {
+		width : 30%;
+	}
+}
+
+@media (max-width : 400px) {
+	.Profile_Settings {
+		width : 70%;
+	}
+}
+

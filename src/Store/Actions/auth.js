@@ -1,4 +1,5 @@
 import * as actions from './actions';
+import * as types from './index';
 
 export const authStart = () => {
     return {
@@ -126,6 +127,8 @@ export const logout = (type, token) => {
             .then(result => {
                 localStorage.removeItem('token');
                 localStorage.removeItem('user');
+
+		dispatch(types.delWhileLogout());
 
                 if (type === "all") {
                     dispatch(logoutAll());

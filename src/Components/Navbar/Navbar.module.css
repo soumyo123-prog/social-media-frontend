@@ -98,3 +98,13 @@
 	border : 2px solid black;
 	margin : 4px;
 }
+
+@media (max-width : 680px) {
+	.Profile {
+		display : none;
+	}
+
+	.Search {
+		display : none;
+	}
+}

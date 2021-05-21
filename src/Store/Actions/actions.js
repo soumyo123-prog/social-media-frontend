@@ -5,6 +5,7 @@ export const REDIRECTED = "REDIRECTED";
 export const LOGOUT_ONCE = "LOGOUT_ONCE";
 export const LOGOUT_ALL = "LOGOUT_ALL";
 export const LOGOUT_FAILED = "LOGOUT_FAILED";
+export const DEL_WHILE_LOGOUT = "DEL_WHILE_LOGOUT";
 export const UPDATE_USER = "UPDATE_USER";
 export const DELETE_USER = "DELETE_USER";
 export const CHANGE_COUNT = "CHANGE_COUNT";

@@ -5,6 +5,8 @@ import * as types from '../../Store/Actions/index';
 import {Link, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
+import Dragdrop from '../DragDrop/dragDrop';
+
 class Settings extends React.Component {
     constructor(props){
         super(props);
@@ -110,44 +112,12 @@ class Settings extends React.Component {
         })
     }
 
-    avatarUpdateSubmit = (e) => {
-        e.preventDefault();
-
-        if (this.inputFileRef.current.value) {
-
-            var myHeaders = new Headers();
-            myHeaders.append("Authorization", "Bearer " + this.props.token);
-
-            var formdata = new FormData();
-            formdata.append("avatar", this.inputFileRef.current.files[0], this.inputFileRef.current.value);
-
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: formdata,
-                redirect: 'follow'
-            };
-
-            fetch("/users/me/avatar", requestOptions)
-                .then(response => {
-                    this.setState({
-                        fileError : null
-                    })
-                })
-                .catch(error => {
-                    this.setState({
-                        fileError : "Cannot update avatar due to internal server error !"
-                    })
-                });
-        }
-    }
-
     render () {
         let updateForm = null;
         if (this.state.update) {
             updateForm = (
                 <form 
-                    onSubmit={this.avatarUpdateSubmit}
+                    onSubmit={this.updateSubmitHandler}
                     className = {classes.Update_Form}
                 >
                     <input 
@@ -187,20 +157,7 @@ class Settings extends React.Component {
         let avatarForm = null;
         if (this.state.avatar) {
             avatarForm = (
-                <form 
-                    className={classes.Add_Avatar} 
-                    onSubmit={this.avatarUpdateSubmit} 
-                >
-                    <input 
-                        type = "file"
-                        accept = "image/png, image/jpeg, image/webp, image/jpg"
-                        name = "avatar" 
-                        ref = {this.inputFileRef}
-                    />
-                    <button
-                        className = {classes.Avatar_Submit}
-                    > Submit </button>
-                </form>
+                <Dragdrop />
             )
         }
 

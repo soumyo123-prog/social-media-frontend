@@ -35,3 +35,74 @@
         background : #292a2b;
         color : white;
 }
+
+.Sidebar li a{
+	display : block;
+	height : 100%;
+	width : 100%;
+	color : inherit;
+	text-decoration : none;
+}
+
+.Search_Bar {
+	display : none;
+	width : 100%;
+	height : 30px;
+}
+
+.Search_Bar form {
+	height : 100%;
+}
+
+.Search_Bar input {
+	height : 100%;
+	display : inline-block;
+	width : 80%;
+	border : 0;
+	border-bottom : 1px solid gray;
+	opacity : 0.6;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+.Search_Bar input:focus {
+	outline : 0;
+	border-bottom: 1px solid #10177a;
+}
+
+.Search_Bar button {
+	width : 20%;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border : 0;
+	opacity: 0.6;
+	height : 100%;
+}
+
+.Search_Bar button:focus {
+	outline : 0;
+}
+
+.Profile {
+	display : none;
+}
+
+@media (max-width : 680px) {
+	.Sidebar {
+		width : 60%;
+	}
+
+	.Search_Bar {
+		display : block;
+	}
+
+	.Profile {
+		display : block;
+	}
+}
+
+@media (max-width : 350px) {
+	.Sidebar {
+		font-size : 0.8rem;
+	}
+}
