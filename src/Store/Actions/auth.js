@@ -3,13 +3,13 @@ import * as types from './index';
 
 export const authStart = () => {
     return {
-        type : actions.AUTH_START
+        type: actions.AUTH_START
     }
 }
 
-export const authSuccess = (user,token) => {
+export const authSuccess = (user, token) => {
     return {
-        type : actions.AUTH_SUCCESS,
+        type: actions.AUTH_SUCCESS,
         user,
         token
     }
@@ -17,18 +17,18 @@ export const authSuccess = (user,token) => {
 
 export const authFailed = (error) => {
     return {
-        type : actions.AUTH_FAILED,
-        error : error
+        type: actions.AUTH_FAILED,
+        error: error
     }
 }
 
 export const redirected = () => {
     return {
-        type : actions.REDIRECTED
+        type: actions.REDIRECTED
     }
 }
 
-export const authInit = (details,value) => {
+export const authInit = (details, value) => {
     return dispatch => {
         dispatch(authStart());
 
@@ -60,15 +60,15 @@ export const authInit = (details,value) => {
                     return dispatch(authFailed(result.error));
                 }
 
-                localStorage.setItem('token',result.token);
-                localStorage.setItem('user',JSON.stringify(result.user));
+                localStorage.setItem('token', result.token);
+                localStorage.setItem('user', JSON.stringify(result.user));
 
                 dispatch(authSuccess(result.user, result.token));
             })
             .catch(error => {
                 dispatch(authFailed(error.message));
             });
-        }
+    }
 }
 
 export const tryAutoSignIn = () => {
@@ -79,29 +79,48 @@ export const tryAutoSignIn = () => {
         const user = JSON.parse(localStorage.getItem('user'));
 
         if (token && user) {
-            dispatch(authSuccess(user,token));
+            let myHeaders = new Headers();
+            myHeaders.append("Authorization", "Bearer " + token);
+
+            let requestOptions = {
+                method: 'GET',
+                headers: myHeaders,
+                redirect: 'follow'
+            };
+
+            fetch("/users/me", requestOptions)
+            .then(response => response.json())
+            .then(user => {
+                localStorage.setItem('user', JSON.stringify(user));
+                dispatch(authSuccess(user,token));
+            })
+            .catch(error => {
+                dispatch(authFailed("SignIn Again !"));
+            });
+
         } else {
-            dispatch(authFailed());
+            dispatch(authFailed("SignIn Again !"));
         }
     }
 }
 
 export const logoutOnce = () => {
     return {
-        type : actions.LOGOUT_ONCE
+        type: actions.LOGOUT_ONCE
     }
 }
 
 export const logoutAll = () => {
     return {
-        type : actions.LOGOUT_ALL
+        type: actions.LOGOUT_ALL,
+        reload: true
     }
 }
 
 export const logoutFailed = (error) => {
     return {
-        type : actions.LOGOUT_FAILED,
-        error 
+        type: actions.LOGOUT_FAILED,
+        error
     }
 }
 
@@ -114,7 +133,7 @@ export const logout = (type, token) => {
         }
 
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer "+token);
+        myHeaders.append("Authorization", "Bearer " + token);
 
         var requestOptions = {
             method: 'POST',
@@ -128,7 +147,7 @@ export const logout = (type, token) => {
                 localStorage.removeItem('token');
                 localStorage.removeItem('user');
 
-		dispatch(types.delWhileLogout());
+                dispatch(types.delWhileLogout());
 
                 if (type === "all") {
                     dispatch(logoutAll());
@@ -139,17 +158,17 @@ export const logout = (type, token) => {
             .catch(error => {
                 dispatch(logoutFailed("Cannot logout due to internal server error !"));
             });
-        }
+    }
 }
 
 export const updateUser = (name, email) => {
     const user = JSON.parse(localStorage.getItem('user'));
     user.name = name;
     user.email = email;
-    localStorage.setItem('user',JSON.stringify(user));
+    localStorage.setItem('user', JSON.stringify(user));
 
     return {
-        type : actions.UPDATE_USER,
+        type: actions.UPDATE_USER,
         name,
         email
     }
@@ -160,7 +179,7 @@ export const deleteUser = () => {
     localStorage.removeItem('token');
 
     return {
-        type : actions.DELETE_USER
+        type: actions.DELETE_USER
     }
 }
 
@@ -171,10 +190,10 @@ export const getCount = (nature) => {
     } else {
         user.countPosts -= 1;
     }
-    localStorage.setItem('user',JSON.stringify(user));
+    localStorage.setItem('user', JSON.stringify(user));
 
     return {
-        type : actions.CHANGE_COUNT,
+        type: actions.CHANGE_COUNT,
         nature
     }
 }
@@ -183,14 +202,14 @@ export const updateLikedSuccess = (user) => {
     localStorage.setItem('user', JSON.stringify(user));
 
     return {
-        type : actions.UPDATE_LIKED_SUCCESS,
+        type: actions.UPDATE_LIKED_SUCCESS,
         user
     }
 }
 
 export const updateLikedFailure = (error) => {
     return {
-        type : actions.UPDATE_LIKED_FAILURE,
+        type: actions.UPDATE_LIKED_FAILURE,
         error
     }
 }
@@ -206,13 +225,22 @@ export const updateLiked = (token, id, type) => {
             redirect: 'follow'
         };
 
-        fetch("/posts/"+id+"/likes?type="+type, requestOptions)
-        .then(response => response.json())
-        .then(user => {
-            dispatch(updateLikedSuccess(user));
-        })
-        .catch(error => {
-            dispatch(updateLikedFailure(error));
-        });
+        fetch("/posts/" + id + "/likes?type=" + type, requestOptions)
+            .then(response => {
+                let options = {
+                    method: 'GET',
+                    headers : myHeaders,
+                    redirect : 'follow'
+                }
+
+                return fetch('/users/me', options)
+            })
+            .then(res => res.json())
+            .then(user => {
+                dispatch(updateLikedSuccess(user));
+            })
+            .catch(error => {
+                dispatch(updateLikedFailure(error));
+            });
     }
 }

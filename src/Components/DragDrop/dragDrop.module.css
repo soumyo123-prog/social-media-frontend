@@ -23,14 +23,20 @@
 	border : 5px dashed grey;
 }
 
-.Add_Avatar button {
+.Browse {
+	display: none;
+}
+
+label[for="avatar-upload"] {
+	background-color : #5962e3;
+	color : white;
 	display : block;
 	width : 50%;
-	margin-right: auto;
+	height : 30px;
+	border-radius : 10px;
 	margin-left: auto;
-	border-radius : 5px;
-	border : 0;
-	color : white;
-	background : #5962e3;
-	padding : 5px;
+	margin-right : auto;
+	padding : 3px;
+	cursor : pointer;
+	z-index : 50;
 }

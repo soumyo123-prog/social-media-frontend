@@ -202,6 +202,7 @@
     background : #5962e3;
     border-top-left-radius: 5px;
     border-bottom-right-radius: 5px;
+    z-index : 80;
 }
 
 .FullPost:hover {
@@ -221,6 +222,10 @@
 }
 
 @media (max-width : 680px) {
+    .Profile_Container_1 {
+        width : 100%;
+    }
+
 	.Avatar_Container {
 		float : none;
 		margin-left : auto;
