@@ -48,16 +48,12 @@ class DragDrop extends React.Component {
 		this.setState({
 			dragging: true
 		})
-
-		console.log("User is dragging");
 	}
 
 	fileDragLeaveHandler = (e) => {
 		this.setState({
 			dragging: false
 		})
-
-		console.log("User is leaving");
 	}
 
 	fileDropHandler = (e) => {

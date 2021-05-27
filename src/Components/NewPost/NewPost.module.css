@@ -4,55 +4,109 @@
 }
 
 .Redirect_To_Profile {
-    height : 50px;
+    height : 30px;
     width : 100%;
     position: relative;
 }
 
 .Redirect_To_Profile a {
     display: block;
-    height : 50px;
-    width : 50px;
+    height : 30px;
+    width : 30px;
     position: absolute;
     right : 0;
     border-radius : 50%;
-    border : 2px solid black;
+    border : 2px solid white;
     text-align : center;
-    padding : 9px;
-    color : black;
+    padding : 3px;
+    color : white;
     text-decoration: none;
-    font-size : 1.3em;
+    font-size : 1.1em;
     font-weight: bold;
 }
 
 .New_Post_Contents {
+    position: absolute;
+    top : 50%;
+    left : 50%;
+    transform : translate(-50%,-50%);
     width : 70%;
-    margin-top : 30px;
-    margin-left : auto;
-    margin-right : auto;
-    border : 1px solid black;
-    padding : 10px;
+    border-radius: 10px;
+    padding : 20px;
+    background : #ff9c38;
 }
 
-.New_Post_Contents input, .New_Post_Contents textarea, .New_Post_Contents button {
+.New_Post_Contents input {
     display : block;
     width : 100%;
+    margin-bottom: 20px;
+    height : 40px;
+    background-color: #ff9c38;
+    border-right : 0;
+    border-left : 0;
+    border-top : 0;
+    border-bottom : 2px solid gray;
+    font-size : 1.1em;
+    outline : 0;
 }
 
-.New_Post_Contents input, .New_Post_Contents textarea {
-    margin-bottom : 15px;
-    height : 50px;
+.New_Post_Contents input:focus {
+    border-bottom : 3px solid #10177a;
 }
 
-.ErrorMessage {
-    float : left;
-    width : 100%;
-    height : 50px;
-    font-size: 1.2em;
-    border-radius: 5px;
-    border : 1px solid black;
-    background-color : crimson;
+.New_Post_Contents textarea {
+    min-width: 100%;
+    max-width : 100%;
+    opacity : 0.5;
+    outline : 0;
+    font-size : 1.1em;
+    margin-bottom: 20px;
+}
+
+.New_Post_Contents button {
+    display : block;
+    width : 30%;
+    font-size : 1.1em;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius : 5px;
+    border : 0;
     color : white;
-    text-align : center;
-    padding : 10px;
+    background : #5962e3;
+    padding : 5px;
+    cursor : pointer
+}
+
+.New_Post_Contents .Post_Pic_Upload {
+    display: none;
+}
+
+label[for = "upload-post-picture"] {
+    display : block;
+    width : 30%;
+    font-size : 1.1em;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius : 5px;
+    border : 0;
+    color : white;
+    background : #5962e3;
+    padding : 5px;
+    margin-bottom: 20px;
+    text-align: center;
+    cursor : pointer;
+}
+
+@media (max-width: 680px) {
+    .New_Post_Contents {
+        width : 95%;
+    }
+
+    .New_Post_Contents button {
+        width : 60%;
+    }
+
+    label[for = "upload-post-picture"] {
+        width : 60%;
+    }
 }

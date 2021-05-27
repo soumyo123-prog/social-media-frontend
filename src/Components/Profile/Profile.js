@@ -254,7 +254,7 @@ class Profile extends React.Component {
 
                     <div className={classes.Profile_Details}>
                         <div className={classes.Profile_About}>
-                            About
+                            {this.props.about}
                         </div>
 
                         <div className={classes.Profile_Settings}>
@@ -298,7 +298,8 @@ const mapStateToProps = state => {
         token: state.auth.token,
         posts: state.post.posts,
         error: state.post.error,
-        liked : state.auth.user ? state.auth.user.liked : null
+        liked : state.auth.user ? state.auth.user.liked : null,
+        about : state.auth.user ? state.auth.user.about : null
     }
 }
 

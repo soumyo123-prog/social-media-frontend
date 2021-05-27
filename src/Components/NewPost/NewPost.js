@@ -93,11 +93,6 @@ class NewPost extends React.Component {
             redirect = <Redirect to = '/profile/me' />
         }
 
-        let errorMessage = null;
-        if (this.state.error) {
-            errorMessage = <div className = {classes.ErrorMessage}> {this.state.error} </div>;
-        }
-
         return (
             <div className = {classes.New_Post_Container}>
                 {redirect}
@@ -124,14 +119,18 @@ class NewPost extends React.Component {
                             type = "file"
                             accept = "image/jpg, image/png, image/jpeg, image/webp"
                             ref = {this.fileRef}
+                            id = "upload-post-picture"
+                            className = {classes.Post_Pic_Upload}
                         />
+
+                        <label for = "upload-post-picture">
+                            Browse
+                        </label>
 
                         <button>
                             Submit
                         </button>
                     </form>
-
-                    {errorMessage}
                 </div>
             </div>
         )

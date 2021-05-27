@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as types from './Store/Actions/index';
 
 import Layout from './Containers/Layout/Layout';
+import Spinner from './Components/Spinner/Spinner';
 
 import './App.css';
 
@@ -14,9 +15,18 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
+        <Spinner 
+          showSpinner={this.props.spinner}
+        />
         <Layout />
       </div>
     );
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    spinner: state.auth.spinner
   }
 }
 
@@ -26,4 +36,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

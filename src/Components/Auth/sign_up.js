@@ -6,6 +6,7 @@ import {Redirect} from 'react-router-dom';
 import * as types from '../../Store/Actions/index';
 import Aux from '../../HOC/auxil';
 import Name from '../Name/Name';
+import Spinner from '../Spinner/Spinner';
 
 class SignUp extends React.Component {
     state = {
@@ -43,6 +44,9 @@ class SignUp extends React.Component {
         return (
             <Aux>
                 <Name />
+                <Spinner 
+                    showSpinner = {this.props.spinner}
+                />
                 <div className={classes.Login_Form_Container}>
                     <form 
                         className={classes.Login_Form}
@@ -78,7 +82,8 @@ class SignUp extends React.Component {
 const mapStateToProps = (state) => {
     return {
         error : state.auth.error,
-        token : state.auth.token
+        token : state.auth.token,
+        spinner : state.auth.spinner
     }
 }
 

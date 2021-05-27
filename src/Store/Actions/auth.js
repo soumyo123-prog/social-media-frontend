@@ -1,6 +1,18 @@
 import * as actions from './actions';
 import * as types from './index';
 
+export const showSpinner = () => {
+    return {
+        type : actions.SHOW_SPINNER
+    }
+}
+
+export const hideSpinner = () => {
+    return {
+        type : actions.HIDE_SPINNER
+    }
+}
+
 export const authStart = () => {
     return {
         type: actions.AUTH_START
@@ -31,6 +43,7 @@ export const redirected = () => {
 export const authInit = (details, value) => {
     return dispatch => {
         dispatch(authStart());
+        dispatch(showSpinner());
 
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -53,19 +66,23 @@ export const authInit = (details, value) => {
             .then(response => response.json())
             .then(result => {
                 if (result.name === "MongoError" && result.keyPattern.email === 1) {
+                    dispatch(hideSpinner());
                     return dispatch(authFailed("User with this email already exists !"));
                 }
 
                 if (result.error) {
+                    dispatch(hideSpinner());
                     return dispatch(authFailed(result.error));
                 }
 
                 localStorage.setItem('token', result.token);
                 localStorage.setItem('user', JSON.stringify(result.user));
 
+                dispatch(hideSpinner());
                 dispatch(authSuccess(result.user, result.token));
             })
             .catch(error => {
+                dispatch(hideSpinner());
                 dispatch(authFailed(error.message));
             });
     }
@@ -74,6 +91,7 @@ export const authInit = (details, value) => {
 export const tryAutoSignIn = () => {
     return dispatch => {
         dispatch(authStart());
+        dispatch(showSpinner());
 
         const token = localStorage.getItem('token');
         const user = JSON.parse(localStorage.getItem('user'));
@@ -92,13 +110,21 @@ export const tryAutoSignIn = () => {
             .then(response => response.json())
             .then(user => {
                 localStorage.setItem('user', JSON.stringify(user));
+
+                dispatch(hideSpinner());
                 dispatch(authSuccess(user,token));
             })
             .catch(error => {
-                dispatch(authFailed("SignIn Again !"));
+                dispatch(hideSpinner());
+                dispatch(authFailed("Login Again !"));
             });
 
         } else {
+            if (token == undefined || user == undefined) {
+                localStorage.removeItem('user');
+                localStorage.removeItem('token');
+            }
+            dispatch(hideSpinner());
             dispatch(authFailed("SignIn Again !"));
         }
     }
@@ -242,5 +268,51 @@ export const updateLiked = (token, id, type) => {
             .catch(error => {
                 dispatch(updateLikedFailure(error));
             });
+    }
+}
+
+export const updateAboutSuccess = (about) => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    user.about = about;
+    localStorage.setItem('user', JSON.stringify(user));
+
+    return {
+        type : actions.UPDATE_ABOUT_SUCCESS,
+        about
+    }
+}
+
+export const updateAboutFailure = (error) => {
+    return {
+        type : actions.UPDATE_ABOUT_FAILURE,
+        error
+    }
+}
+
+export const updateAbout = (about, token) => {
+    return dispatch => {
+
+        let myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + token);
+        myHeaders.append("Content-Type", "application/json");
+
+        let raw = JSON.stringify({
+            "about": about
+        });
+
+        let requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("/users/me/about", requestOptions)
+        .then(response => {
+            dispatch(updateAboutSuccess(about));
+        })
+        .catch(error => {
+            dispatch(updateAboutFailure(error));
+        });
     }
 }

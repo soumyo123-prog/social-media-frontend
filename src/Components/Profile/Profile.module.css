@@ -249,6 +249,10 @@
 	.FullPost {
 		width : 30%;
 	}
+
+    .Profile_About {
+        height : auto;
+    }
 }
 
 @media (max-width : 400px) {

@@ -13,12 +13,14 @@ class Settings extends React.Component {
         this.newNameRef = React.createRef();
         this.newEmailRef = React.createRef();
         this.inputFileRef = React.createRef();
+        this.textRef = React.createRef();
     }
 
     state = {
         update : false,
         delete : false,
         avatar: false,
+        about : false,
         error : null
     }
 
@@ -112,6 +114,21 @@ class Settings extends React.Component {
         })
     }
 
+    aboutClickHandler = () => {
+        this.setState(prev => {
+            return {
+                about : !(prev.about)
+            }
+        })
+    }
+
+    updateAboutHandler = (e) => {
+        e.preventDefault();
+
+        const value = this.textRef.current.value;
+        this.props.updateAbout(value, this.props.token);
+    }
+
     render () {
         let updateForm = null;
         if (this.state.update) {
@@ -161,6 +178,23 @@ class Settings extends React.Component {
             )
         }
 
+        let aboutForm = null;
+        if (this.state.about) {
+            aboutForm = (
+                <form
+                    onSubmit = {this.updateAboutHandler}
+                    className = {classes.About_Form}
+                >
+                    <textarea 
+                        ref = {this.textRef}
+                    />
+                    <button>
+                        Submit
+                    </button>
+                </form>
+            )
+        }
+
         let errorMessage = null;
         if (this.state.error) {
             errorMessage = <div className = {classes.ErrorMessage}> {this.state.error} </div>
@@ -201,8 +235,16 @@ class Settings extends React.Component {
                     >
                         Delete Profile
                     </div>
-
                     {deleteForm}
+
+                    <div
+                        className = {classes.Update_About}
+                        onClick = {this.aboutClickHandler}
+                    >
+                        Update About
+                    </div>
+                    {aboutForm}
+
                     {errorMessage}
                 </div>
             </div>
@@ -221,7 +263,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         updateUser : (name,email) => dispatch(types.updateUser(name,email)),
-        deleteUser : () => dispatch(types.deleteUser())
+        deleteUser : () => dispatch(types.deleteUser()),
+        updateAbout : (about, token) => dispatch(types.updateAbout(about, token))
     }
 }
 

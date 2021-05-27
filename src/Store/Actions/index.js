@@ -9,7 +9,8 @@ export {
     updateUser,
     deleteUser,
     getCount,
-    updateLiked
+    updateLiked,
+    updateAbout
 } from './auth';
 
 export {

@@ -4,7 +4,8 @@ const initialState = {
     user: null,
     token: null,
     error: null,
-    redirectPath: null
+    redirectPath: null,
+    spinner : false
 };
 
 const authStart = (state, action) => {
@@ -117,6 +118,36 @@ const updateLikedFailure = (state, action) => {
     return prevState;
 }
 
+const updateAboutSuccess = (state, action) => {
+    const prevState = { ...state };
+    const prevUser = {...prevState.user};
+    prevUser.about = action.about;
+    prevState.user = prevUser;
+
+    return prevState;
+}
+
+const updateAboutFailure = (state, action) => {
+    const prevState = { ...state };
+    prevState.error = action.error;
+
+    return prevState;
+}
+
+const showSpinner = (state, action) => {
+    const prevState = { ...state };
+    prevState.spinner = true;
+
+    return prevState;
+}
+
+const hideSpinner = (state, action) => {
+    const prevState = { ...state };
+    prevState.spinner = false;
+
+    return prevState;
+}
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actions.AUTH_START: return authStart(state, action);
@@ -131,6 +162,10 @@ const reducer = (state = initialState, action) => {
         case actions.CHANGE_COUNT: return changeCount(state, action);
         case actions.UPDATE_LIKED_SUCCESS: return updateLikedSuccess(state, action);
         case actions.UPDATE_LIKED_FAILURE: return updateLikedFailure(state, action);
+        case actions.UPDATE_ABOUT_SUCCESS : return updateAboutSuccess(state, action);
+        case actions.UPDATE_LIKED_FAILURE : return updateAboutFailure(state, action);
+        case actions.SHOW_SPINNER : return showSpinner(state, action);
+        case actions.HIDE_SPINNER : return hideSpinner(state, action);
 
         default: return state;
     }
