@@ -8,6 +8,7 @@ import Navbar from '../Navbar/Navbar';
 import Redirector from '../Redirector/redirect';
 import Backdrop from '../Backdrop/Backdrop';
 import FullPost from '../FullPost/FullPost';
+import Top from '../BackToTop/top';
 
 let skip = 0;
 let scrollable = true;
@@ -26,7 +27,8 @@ class Profile extends React.Component {
         fullPost: {},
         fileError: null,
         canIncrease: true,
-        touchShow: false
+        touchShow: false,
+        showScrollTop : false
     }
 
     componentDidMount() {
@@ -138,6 +140,7 @@ class Profile extends React.Component {
     }
 
     render() {
+        console.log(skip);
         const callBackPosts = post => {
             let like = false;
 
@@ -218,7 +221,6 @@ class Profile extends React.Component {
 
         return (
             <div className={classes.Main}>
-
                 <Backdrop
                     show={this.state.showFullPost}
                     hide={this.hideFullPost}
@@ -253,7 +255,9 @@ class Profile extends React.Component {
                     </div>
 
                     <div className={classes.Profile_Details}>
-                        <div className={classes.Profile_About}>
+                        <div 
+                            className={classes.Profile_About}
+                        >
                             {this.props.about}
                         </div>
 

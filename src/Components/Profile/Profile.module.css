@@ -57,10 +57,25 @@
 }
 
 .Profile_About {
-    height : 80%;
+    height : 75%;
     overflow : auto;
     padding : 20px;
+    margin-bottom: 5%;
 } 
+
+.Profile_About::-webkit-scrollbar {
+    width : 10px;
+}
+
+.Profile_About::-webkit-scrollbar-track {
+    background : #ff9c38;
+    border-radius : 10px;
+}
+
+.Profile_About::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #5962e3;
+}
 
 .Profile_Settings {
     display : block;
@@ -154,19 +169,6 @@
     padding : 10px;
 }
 
-.ErrorMessage {
-    float : left;
-    width : 100%;
-    height : 50px;
-    font-size: 1.2em;
-    border-radius: 5px;
-    border : 1px solid black;
-    background-color : crimson;
-    color : white;
-    text-align : center;
-    padding : 10px;
-}
-
 .Add_Post {
     position : absolute;
     bottom : 0;
@@ -251,7 +253,8 @@
 	}
 
     .Profile_About {
-        height : auto;
+        height : 200px;
+        margin-top : 20px;
     }
 }
 

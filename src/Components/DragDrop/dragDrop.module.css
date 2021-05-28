@@ -19,10 +19,6 @@
 	color : black ;
 }
 
-.IsDragging {
-	border : 5px dashed grey;
-}
-
 .Browse {
 	display: none;
 }

@@ -2,6 +2,8 @@ import React from 'react';
 import classes from './dragDrop.module.css';
 
 import { connect } from 'react-redux';
+import * as types from '../../Store/Actions/index';
+import { Redirect } from 'react-router';
 
 let file;
 
@@ -12,13 +14,14 @@ class DragDrop extends React.Component {
 	}
 
 	state = {
-		dragging: false,
-		fileError: null
+		fileError: null,
+		redirect : false
 	}
 
 	avatarUpdateSubmit = (e) => {
 
 		if (e.target.value) {
+			this.props.showSpinner();
 
 			let myHeaders = new Headers();
 			myHeaders.append("Authorization", "Bearer " + this.props.token);
@@ -35,25 +38,28 @@ class DragDrop extends React.Component {
 
 			fetch("/users/me/avatar", requestOptions)
 				.then(response => {
-					return response;
+					this.props.hideSpinner();
+
+					this.setState({
+						redirect : true
+					})
 				})
 				.catch(error => {
-					return error;
+					this.props.hideSpinner();
+
+					this.setState({
+						redirect : false
+					})
 				});
 		}
 	}
 
 	fileDragOverHandler = (e) => {
 		e.preventDefault();
-		this.setState({
-			dragging: true
-		})
 	}
 
 	fileDragLeaveHandler = (e) => {
-		this.setState({
-			dragging: false
-		})
+		e.preventDefault();
 	}
 
 	fileDropHandler = (e) => {
@@ -64,6 +70,7 @@ class DragDrop extends React.Component {
 
 		if (supported.includes(file.type)) {
 			if (file.size <= 1000000) {
+				this.props.showSpinner();
 
 				let myHeaders = new Headers();
 				myHeaders.append("Authorization", "Bearer " + this.props.token);
@@ -79,10 +86,20 @@ class DragDrop extends React.Component {
 				};
 
 				fetch("/users/me/avatar/drop", requestOptions)
-					.then(response => response)
-					.catch(error => {
+					.then(response => {
+						this.props.hideSpinner();
+
 						this.setState({
-							fileError: "Internal Server Error !"
+							fileError: null,
+							redirect : true
+						})
+					})
+					.catch(error => {
+						this.props.hideSpinner();
+
+						this.setState({
+							fileError: "Internal Server Error !",
+							redirect : false
 						})
 					});
 
@@ -101,9 +118,6 @@ class DragDrop extends React.Component {
 
 	render() {
 		const dragClasses = [classes.Dragdrop_Container];
-		if (this.state.dragging) {
-			dragClasses.push(classes.IsDragging)
-		}
 
 		return (
 			<div
@@ -112,6 +126,7 @@ class DragDrop extends React.Component {
 				onDragLeave={this.fileDragLeaveHandler}
 				onDrop={this.fileDropHandler}
 			>
+				{this.state.redirect ? <Redirect to ='/profile/me' /> : null}
 				<div>Drag and Drop File</div>
 				<div>OR</div>
 
@@ -136,4 +151,11 @@ const mapStateToProps = state => {
 	}
 }
 
-export default connect(mapStateToProps)(DragDrop);
+const mapDispatchToProps = dispatch => {
+	return {
+		showSpinner : () => dispatch(types.showSpinner()),
+		hideSpinner : () => dispatch(types.hideSpinner())
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DragDrop);

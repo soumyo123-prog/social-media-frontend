@@ -291,6 +291,7 @@ export const updateAboutFailure = (error) => {
 
 export const updateAbout = (about, token) => {
     return dispatch => {
+        dispatch(showSpinner());
 
         let myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + token);
@@ -309,9 +310,11 @@ export const updateAbout = (about, token) => {
 
         fetch("/users/me/about", requestOptions)
         .then(response => {
+            dispatch(hideSpinner());
             dispatch(updateAboutSuccess(about));
         })
         .catch(error => {
+            dispatch(hideSpinner());
             dispatch(updateAboutFailure(error));
         });
     }

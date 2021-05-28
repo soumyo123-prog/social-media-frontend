@@ -19,6 +19,11 @@ const spinner = props => {
                     <div 
                         className = {classes.Spinner}
                     />
+                    <div
+                        className = {classes.Spinner_Text}
+                    >
+                        {null || props.text}
+                    </div>
                 </div>
             </Aux>
         )

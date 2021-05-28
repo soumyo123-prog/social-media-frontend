@@ -17,6 +17,7 @@ class App extends React.Component {
       <div className="App">
         <Spinner 
           showSpinner={this.props.spinner}
+          text = "Trying to Log you in automatically"
         />
         <Layout />
       </div>

@@ -1,66 +1,81 @@
 .Main {
-height : 100%;
+	height : 100%;
 }
 
 .Profile_Container_1 {
-position : absolute;
-bottom : 30px;
-top : 30px;
-left : 50%;
-transform : translateX(-50%);
+	position : absolute;
+	bottom : 30px;
+	top : 30px;
+	left : 50%;
+	transform : translateX(-50%);
 
-width : 80%;
-padding : 20px;
-overflow : auto;
+	width : 80%;
+	padding : 20px;
+	overflow : auto;
 }
 
 .Avatar_Container{
-float : left;
-height : 220px;
-width : 200px;
+	float : left;
+	height : 220px;
+	width : 200px;
 }
 
 .Avatar {
-width : 100%;
-overflow : hidden;
-border-radius : 10px;
-float : left;
-height : 200px;
+	width : 100%;
+	overflow : hidden;
+	border-radius : 10px;
+	float : left;
+	height : 200px;
 }
 
 .Avatar img {
-width : 200px;
-height : 200px;
-margin-top : auto;
-margin-bottom : auto;
-border-radius : 10px;
-object-position: center;
+	width : 200px;
+	height : 200px;
+	margin-top : auto;
+	margin-bottom : auto;
+	border-radius : 10px;
+	object-position: center;
 }
 
 .Profile_Name {
-width : 100%;
-height : 20px;
-text-align : center;
-color : white;
-padding : 5%;
-font-size : 1.1em;
-text-transform: capitalize;
-letter-spacing : 2px;
-float : left;
+	width : 100%;
+	height : 20px;
+	text-align : center;
+	color : white;
+	padding : 5%;
+	font-size : 1.1em;
+	text-transform: capitalize;
+	letter-spacing : 2px;
+	float : left;
 }
 
 .Profile_Details {
-float : left;
-width : calc(100% - 200px);
-height : 200px;
-color : white;
+	float : left;
+	width : calc(100% - 200px);
+	height : 200px;
+	color : white;
 }
 
 .Profile_About {
-height : 80%;
-overflow : auto;
-padding : 20px;
+    height : 75%;
+    overflow : auto;
+    padding : 20px;
+    margin-bottom: 5%;
 } 
+
+.Profile_About::-webkit-scrollbar {
+    width : 10px;
+}
+
+.Profile_About::-webkit-scrollbar-track {
+    background : #ff9c38;
+    border-radius : 10px;
+}
+
+.Profile_About::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #5962e3;
+}
 
 .My_Posts {
 float : left;

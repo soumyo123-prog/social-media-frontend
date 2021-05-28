@@ -35,6 +35,7 @@ class SignIn extends React.Component {
                 <Name />
                 <Spinner 
                     showSpinner = {this.props.spinner}
+                    text = "Logging you in"
                 />
                 <div className={classes.Login_Form_Container}>
                     <form 

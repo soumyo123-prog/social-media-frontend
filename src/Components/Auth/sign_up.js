@@ -46,6 +46,7 @@ class SignUp extends React.Component {
                 <Name />
                 <Spinner 
                     showSpinner = {this.props.spinner}
+                    text = "Creating account"
                 />
                 <div className={classes.Login_Form_Container}>
                     <form 

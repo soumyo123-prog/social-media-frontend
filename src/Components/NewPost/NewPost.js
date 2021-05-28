@@ -4,6 +4,7 @@ import * as types from '../../Store/Actions/index';
 
 import {Link, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
+import Spinner from '../Spinner/Spinner';
 
 class NewPost extends React.Component {
     constructor(props) {
@@ -19,6 +20,7 @@ class NewPost extends React.Component {
     }
 
     onSubmitHandler = (e) => {
+        this.props.showSpinner();
         e.preventDefault();
 
         var myHeaders = new Headers();
@@ -72,15 +74,19 @@ class NewPost extends React.Component {
             }
         })
         .then(response => {
+            this.props.hideSpinner();
+
             this.setState({
                 redirect : true,
                 error : null
             })
         })
         .catch(error => {
+            this.props.hideSpinner();
+
             this.setState({
                 redirect : false,
-                error : "Could not upload post due to internal server error !"
+                error : "Internal Server Error !"
             })
         });
     }
@@ -95,6 +101,10 @@ class NewPost extends React.Component {
 
         return (
             <div className = {classes.New_Post_Container}>
+                <Spinner 
+                    showSpinner = {this.props.spinner}
+                    text = "Uploading Post"
+                />
                 {redirect}
 
                 <div className = {classes.Redirect_To_Profile}>
@@ -139,14 +149,17 @@ class NewPost extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        token : state.auth.token
+        token : state.auth.token,
+        spinner : state.auth.spinner
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         updatePosts : (post) => dispatch(types.updatePosts(post)),
-        getCount : (n) => dispatch(types.getCount(n))
+        getCount : (n) => dispatch(types.getCount(n)),
+        showSpinner : () => dispatch(types.showSpinner()),
+        hideSpinner : () => dispatch(types.hideSpinner())
     }
 }
 

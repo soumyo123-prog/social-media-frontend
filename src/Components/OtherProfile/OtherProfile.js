@@ -2,7 +2,6 @@ import React from 'react';
 import classes from './OtherProfile.module.css';
 import * as types from '../../Store/Actions/index';
 
-import Name from '../Name/Name';
 import Navbar from '../Navbar/Navbar';
 import Redirector from '../Redirector/redirect';
 import Fullpost from '../FullPost/FullPost';
@@ -226,7 +225,7 @@ class Other extends React.Component {
 
                     <div className = {classes.Profile_Details}>
                         <div className = {classes.Profile_About}>
-                            About
+                            {this.props.about}
                         </div>
                     </div>
 
@@ -248,7 +247,8 @@ const mapStateToProps = (state) => {
         posts : state.other.posts,
         userErr : state.other.userErr,
         postErr : state.other.postErr,
-        liked : state.auth.user ? state.auth.user.liked : null,
+        liked : state.other.user ? state.other.user.liked : null,
+        about : state.other.user ? state.other.user.about : null
     }
 }
 

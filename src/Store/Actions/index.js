@@ -10,7 +10,9 @@ export {
     deleteUser,
     getCount,
     updateLiked,
-    updateAbout
+    updateAbout,
+    showSpinner,
+    hideSpinner
 } from './auth';
 
 export {

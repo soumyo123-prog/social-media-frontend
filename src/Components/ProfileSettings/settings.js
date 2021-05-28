@@ -6,6 +6,7 @@ import {Link, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 import Dragdrop from '../DragDrop/dragDrop';
+import Spinner from '../Spinner/Spinner';
 
 class Settings extends React.Component {
     constructor(props){
@@ -21,7 +22,8 @@ class Settings extends React.Component {
         delete : false,
         avatar: false,
         about : false,
-        error : null
+        error : null,
+        redirect : false
     }
 
     updateClickHandler = () => {
@@ -33,6 +35,7 @@ class Settings extends React.Component {
     }
 
     updateSubmitHandler = e => {
+        this.props.showSpinner();
         e.preventDefault();
 
         const newName = (this.newNameRef.current.value === "" ? 
@@ -59,15 +62,21 @@ class Settings extends React.Component {
         
         fetch("/users/modify/me", requestOptions)
             .then(response => {
+                this.props.hideSpinner();
+
                 this.setState({
                     update : false,
-                    error : null
+                    error : null,
+                    redirect : true
                 })
                 this.props.updateUser(newName,newEmail);
             })
             .catch(error => {
+                this.props.hideSpinner();
+
                 this.setState({
-                    error : error.message
+                    error : error.message,
+                    redirect : false
                 })
             });
     }
@@ -187,6 +196,7 @@ class Settings extends React.Component {
                 >
                     <textarea 
                         ref = {this.textRef}
+                        placeholder = "About"
                     />
                     <button>
                         Submit
@@ -207,7 +217,13 @@ class Settings extends React.Component {
 
         return (
             <div className = {classes.Settings_Container}>
+                <Spinner 
+                    text = "Updating Profile"
+                    showSpinner = {this.props.spinner}
+                />
                 {redirector}
+                {this.state.redirect ? <Redirect to='/profile/me' /> : null}
+
                 <div className = {classes.Redirect_To_Profile}>
                     <Link to='/profile/me' > X </Link>
                 </div>
@@ -256,7 +272,8 @@ const mapStateToProps = state => {
     return {
         name : state.auth.user ? state.auth.user.name :  null,
         email : state.auth.user ? state.auth.user.email : null,
-        token : state.auth.token ? state.auth.token : null
+        token : state.auth.token ? state.auth.token : null,
+        spinner : state.auth.spinner
     }
 }
 
@@ -264,7 +281,9 @@ const mapDispatchToProps = dispatch => {
     return {
         updateUser : (name,email) => dispatch(types.updateUser(name,email)),
         deleteUser : () => dispatch(types.deleteUser()),
-        updateAbout : (about, token) => dispatch(types.updateAbout(about, token))
+        updateAbout : (about, token) => dispatch(types.updateAbout(about, token)),
+        showSpinner : () => dispatch(types.showSpinner()),
+        hideSpinner : () => dispatch(types.hideSpinner())
     }
 }
 
