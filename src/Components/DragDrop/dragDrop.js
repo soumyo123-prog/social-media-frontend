@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useState} from 'react';
 import classes from './dragDrop.module.css';
 
 import { connect } from 'react-redux';
@@ -7,24 +7,18 @@ import { Redirect } from 'react-router';
 
 let file;
 
-class DragDrop extends React.Component {
-	constructor(props) {
-		super(props);
-		this.dragFileRef = React.createRef();
-	}
+const DragDrop = props => {
 
-	state = {
-		fileError: null,
-		redirect : false
-	}
+	const [fileError, setFileError] = useState(null);
+	const [redirect, setRedirect] = useState(false);
 
-	avatarUpdateSubmit = (e) => {
+	const avatarUpdateSubmit = (e) => {
 
 		if (e.target.value) {
-			this.props.showSpinner();
+			props.showSpinner();
 
 			let myHeaders = new Headers();
-			myHeaders.append("Authorization", "Bearer " + this.props.token);
+			myHeaders.append("Authorization", "Bearer " + props.token);
 
 			let formdata = new FormData();
 			formdata.append("avatar", e.target.files[0], e.target.value);
@@ -38,31 +32,27 @@ class DragDrop extends React.Component {
 
 			fetch("/users/me/avatar", requestOptions)
 				.then(response => {
-					this.props.hideSpinner();
+					props.hideSpinner();
 
-					this.setState({
-						redirect : true
-					})
+					setRedirect(true);
 				})
 				.catch(error => {
-					this.props.hideSpinner();
+					props.hideSpinner();
 
-					this.setState({
-						redirect : false
-					})
+					setRedirect(false);
 				});
 		}
 	}
 
-	fileDragOverHandler = (e) => {
+	const fileDragOverHandler = (e) => {
 		e.preventDefault();
 	}
 
-	fileDragLeaveHandler = (e) => {
+	const fileDragLeaveHandler = (e) => {
 		e.preventDefault();
 	}
 
-	fileDropHandler = (e) => {
+	const fileDropHandler = (e) => {
 		e.preventDefault();
 
 		file = e.dataTransfer.files[0];
@@ -70,10 +60,10 @@ class DragDrop extends React.Component {
 
 		if (supported.includes(file.type)) {
 			if (file.size <= 1000000) {
-				this.props.showSpinner();
+				props.showSpinner();
 
 				let myHeaders = new Headers();
-				myHeaders.append("Authorization", "Bearer " + this.props.token);
+				myHeaders.append("Authorization", "Bearer " + props.token);
 
 				let formdata = new FormData();
 				formdata.append("avatar-drop", file);
@@ -87,62 +77,52 @@ class DragDrop extends React.Component {
 
 				fetch("/users/me/avatar/drop", requestOptions)
 					.then(response => {
-						this.props.hideSpinner();
+						props.hideSpinner();
 
-						this.setState({
-							fileError: null,
-							redirect : true
-						})
+						setRedirect(true);
+						setFileError(null);
 					})
 					.catch(error => {
-						this.props.hideSpinner();
+						props.hideSpinner();
 
-						this.setState({
-							fileError: "Internal Server Error !",
-							redirect : false
-						})
+						setRedirect(false);
+						setFileError("Internal Server Error !");
 					});
 
 			} else {
-				this.setState({
-					fileError: "Size of file should be less than 1 MegaByte !"
-				})
+				setFileError("Size of file should be less than 1 MegaByte !");
 			}
 
 		} else {
-			this.setState({
-				fileError: "Please upload file with extensions .jpeg, .png or .webp !"
-			})
+			setFileError("Please upload file with extensions .jpeg, .png or .webp !");
 		}
 	}
 
-	render() {
-		const dragClasses = [classes.Dragdrop_Container];
+	const dragClasses = [classes.Dragdrop_Container];
 
-		return (
-			<div
-				className={dragClasses.join(' ')}
-				onDragOver={this.fileDragOverHandler}
-				onDragLeave={this.fileDragLeaveHandler}
-				onDrop={this.fileDropHandler}
-			>
-				{this.state.redirect ? <Redirect to ='/profile/me' /> : null}
-				<div>Drag and Drop File</div>
-				<div>OR</div>
+	return (
+		<div
+			className={dragClasses.join(' ')}
+			onDragOver={fileDragOverHandler}
+			onDragLeave={fileDragLeaveHandler}
+			onDrop={fileDropHandler}
+		>
+			{redirect ? <Redirect to ='/profile/me' /> : null}
+			<div>Drag and Drop File</div>
+			<div>OR</div>
 
-				<input
-					className={classes.Browse}
-					type="file"
-					accept="image/png, image/jpeg, image/webp, image/jpg"
-					name="avatar"
-					id="avatar-upload"
-					onChange={this.avatarUpdateSubmit}
-				/>
-				<label for="avatar-upload">Browse</label>
+			<input
+				className={classes.Browse}
+				type="file"
+				accept="image/png, image/jpeg, image/webp, image/jpg"
+				name="avatar"
+				id="avatar-upload"
+				onChange={avatarUpdateSubmit}
+			/>
+			<label for="avatar-upload">Browse</label>
 
-			</div>
-		)
-	}
+		</div>
+	)
 }
 
 const mapStateToProps = state => {

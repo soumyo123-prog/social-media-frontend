@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useRef, useState} from 'react';
 import classes from './NewPost.module.css';
 import * as types from '../../Store/Actions/index';
 
@@ -6,30 +6,26 @@ import {Link, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 
-class NewPost extends React.Component {
-    constructor(props) {
-        super(props);
-        this.headingRef = React.createRef();
-        this.contentRef = React.createRef();
-        this.fileRef = React.createRef();
-    }
+const NewPost = props => {
 
-    state = {
-        redirect : false,
-        error : null
-    }
+    const [redirect, setRedirect] = useState(false);
+    const [error, setError] = useState(false);
 
-    onSubmitHandler = (e) => {
-        this.props.showSpinner();
+    const headingRef = useRef(null);
+    const contentRef = useRef(null);
+    const fileRef = useRef(null);
+
+    const onSubmitHandler = (e) => {
+        props.showSpinner();
         e.preventDefault();
 
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + this.props.token);
+        myHeaders.append("Authorization", "Bearer " + props.token);
         myHeaders.append("Content-Type", "application/json");
 
         var raw = JSON.stringify({
-            "heading": "" || this.headingRef.current.value,
-            "content": "" || this.contentRef.current.value
+            "heading": "" || headingRef.current.value,
+            "content": "" || contentRef.current.value
         });
 
         var requestOptions = {
@@ -42,14 +38,12 @@ class NewPost extends React.Component {
         fetch("/posts/add", requestOptions)
         .then(response => response.json())
         .then(result => {
-            this.props.updatePosts(result);
-            this.props.getCount(true);
+            props.updatePosts(result);
+            props.getCount(true);
 
-            if (this.fileRef.current.files.length === 0) {
-                this.setState({
-                    redirect : true,
-                    error : null
-                })
+            if (fileRef.current.files.length === 0) {
+                setRedirect(true);
+                setError(null);
                 
                 return new Promise((resolve, reject) => {
                     resolve();
@@ -58,10 +52,10 @@ class NewPost extends React.Component {
             } else {
                 
                 var myHeaders = new Headers();
-                myHeaders.append("Authorization", "Bearer " + this.props.token);
+                myHeaders.append("Authorization", "Bearer " + props.token);
     
                 var formdata = new FormData();
-                formdata.append("post", this.fileRef.current.files[0], this.fileRef.current.value);
+                formdata.append("post", fileRef.current.files[0], fileRef.current.value);
     
                 var requestOptions = {
                     method: 'POST',
@@ -74,77 +68,70 @@ class NewPost extends React.Component {
             }
         })
         .then(response => {
-            this.props.hideSpinner();
+            props.hideSpinner();
 
-            this.setState({
-                redirect : true,
-                error : null
-            })
+            setRedirect(true);
+            setError(null);
+
         })
         .catch(error => {
-            this.props.hideSpinner();
+            props.hideSpinner();
 
-            this.setState({
-                redirect : false,
-                error : "Internal Server Error !"
-            })
+            setRedirect(false);
+            setError("Internal Server Error !");
         });
     }
 
-    render() {
-        console.log("here");
-
-        let redirect = null;
-        if (this.state.redirect) {
-            redirect = <Redirect to = '/profile/me' />
-        }
-
-        return (
-            <div className = {classes.New_Post_Container}>
-                <Spinner 
-                    showSpinner = {this.props.spinner}
-                    text = "Uploading Post"
-                />
-                {redirect}
-
-                <div className = {classes.Redirect_To_Profile}>
-                    <Link to = '/profile/me'> X </Link>
-                </div>
-
-                <div className = {classes.New_Post_Contents}>
-
-                    <form onSubmit={this.onSubmitHandler}>
-                        <input 
-                            type = "text"
-                            placeholder = "Heading"
-                            ref = {this.headingRef}
-                        />
-
-                        <textarea
-                            placeholder = "Content"
-                            ref = {this.contentRef}
-                        />
-
-                        <input
-                            type = "file"
-                            accept = "image/jpg, image/png, image/jpeg, image/webp"
-                            ref = {this.fileRef}
-                            id = "upload-post-picture"
-                            className = {classes.Post_Pic_Upload}
-                        />
-
-                        <label for = "upload-post-picture">
-                            Browse
-                        </label>
-
-                        <button>
-                            Submit
-                        </button>
-                    </form>
-                </div>
-            </div>
-        )
+    let redirector = null;
+    if (redirect) {
+        redirector = <Redirect to = '/profile/me' />
     }
+
+    return (
+        <div className = {classes.New_Post_Container}>
+            <Spinner 
+                showSpinner = {props.spinner}
+                text = "Uploading Post"
+            />
+            {redirector}
+
+            <div className = {classes.Redirect_To_Profile}>
+                <Link to = '/profile/me'> X </Link>
+            </div>
+
+            <div className = {classes.New_Post_Contents}>
+
+                <form onSubmit={onSubmitHandler}>
+                    <input 
+                        type = "text"
+                        placeholder = "Heading"
+                        ref = {headingRef}
+                    />
+
+                    <textarea
+                        placeholder = "Content"
+                        ref = {contentRef}
+                    />
+
+                    <input
+                        type = "file"
+                        accept = "image/jpg, image/png, image/jpeg, image/webp"
+                        ref = {fileRef}
+                        id = "upload-post-picture"
+                        className = {classes.Post_Pic_Upload}
+                    />
+
+                    <label for = "upload-post-picture">
+                        Browse
+                    </label>
+
+                    <button>
+                        Submit
+                    </button>
+                </form>
+            </div>
+        </div>
+    )
 }
 
 const mapStateToProps = (state) => {

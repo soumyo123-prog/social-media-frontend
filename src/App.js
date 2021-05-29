@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useEffect} from 'react';
 import { connect } from 'react-redux';
 import * as types from './Store/Actions/index';
 
@@ -7,22 +7,22 @@ import Spinner from './Components/Spinner/Spinner';
 
 import './App.css';
 
-class App extends React.Component {
-  componentDidMount() {
-    this.props.tryAutoSignIn();
-  }
+const App = (props) => {
 
-  render() {
-    return (
-      <div className="App">
-        <Spinner 
-          showSpinner={this.props.spinner}
-          text = "Trying to Log you in automatically"
-        />
-        <Layout />
-      </div>
-    );
-  }
+  useEffect(() => {
+    props.tryAutoSignIn();
+  }, []);
+
+  return (
+    <div className="App">
+      <Spinner 
+        showSpinner={props.spinner}
+        text = "Trying to Log you in automatically"
+      />
+      <Layout />
+    </div>
+  );
+
 }
 
 const mapStateToProps = state => {

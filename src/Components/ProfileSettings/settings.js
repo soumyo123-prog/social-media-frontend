@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useState, useRef} from 'react';
 import classes from './settings.module.css';
 import * as types from '../../Store/Actions/index';
 
@@ -8,44 +8,36 @@ import {connect} from 'react-redux';
 import Dragdrop from '../DragDrop/dragDrop';
 import Spinner from '../Spinner/Spinner';
 
-class Settings extends React.Component {
-    constructor(props){
-        super(props);
-        this.newNameRef = React.createRef();
-        this.newEmailRef = React.createRef();
-        this.inputFileRef = React.createRef();
-        this.textRef = React.createRef();
+const Settings = props => {
+
+    const [update, setUpdate] = useState(false);
+    const [del, setDel] = useState(false);
+    const [avatar, setAvatar] = useState(false);
+    const [about, setAbout] = useState(false);
+    const [error, setError] = useState(null);
+    const [redirect, setRedirect] = useState(false);
+
+    const newNameRef = useRef(null);
+    const newEmailRef = useRef(null);
+    const inputFileRef = useRef(null);
+    const textRef = useRef(null);
+
+    const updateClickHandler = () => {
+        setUpdate(!update);
     }
 
-    state = {
-        update : false,
-        delete : false,
-        avatar: false,
-        about : false,
-        error : null,
-        redirect : false
-    }
-
-    updateClickHandler = () => {
-        this.setState(prev => {
-            return {
-                update : !(prev.update)
-            }
-        })
-    }
-
-    updateSubmitHandler = e => {
-        this.props.showSpinner();
+    const updateSubmitHandler = e => {
+        props.showSpinner();
         e.preventDefault();
 
-        const newName = (this.newNameRef.current.value === "" ? 
-                        this.props.name : this.newNameRef.current.value);
+        const newName = (newNameRef.current.value === "" ? 
+                        props.name : newNameRef.current.value);
         
-        const newEmail = (this.newEmailRef.current.value === "" ? 
-                        this.props.email : this.newEmailRef.current.value);
+        const newEmail = (newEmailRef.current.value === "" ? 
+                        props.email : newEmailRef.current.value);
         
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + this.props.token);
+        myHeaders.append("Authorization", "Bearer " + props.token);
         myHeaders.append("Content-Type", "application/json");
         
         var raw = JSON.stringify({
@@ -62,36 +54,29 @@ class Settings extends React.Component {
         
         fetch("/users/modify/me", requestOptions)
             .then(response => {
-                this.props.hideSpinner();
+                props.hideSpinner();
 
-                this.setState({
-                    update : false,
-                    error : null,
-                    redirect : true
-                })
-                this.props.updateUser(newName,newEmail);
+                setRedirect(true);
+                setUpdate(false);
+                setError(null);
+
+                props.updateUser(newName,newEmail);
             })
             .catch(error => {
-                this.props.hideSpinner();
+                props.hideSpinner();
 
-                this.setState({
-                    error : error.message,
-                    redirect : false
-                })
+                setError("Internal Server Error !");
+                setRedirect(false);
             });
     }
 
-    deleteClickHandler = () => {
-        this.setState(prev => {
-            return {
-                delete : !(prev.delete)
-            }
-        })
+    const delClickHandler = () => {
+        setDel(!del);
     }
 
-    confirmDeleteClickHandler = () => {
+    const confirmDelClickHandler = () => {
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer "+this.props.token);
+        myHeaders.append("Authorization", "Bearer "+props.token);
 
         var requestOptions = {
             method: 'DELETE',
@@ -101,171 +86,150 @@ class Settings extends React.Component {
 
         fetch("/users/remove/me", requestOptions)
             .then(response => {
-                this.setState({
-                    error : null,
-                    delete : false
-                })
+                setDel(false);
+                setError(null);
 
-                this.props.deleteUser();
+                props.deleteUser();
             })
             .catch(error => {
-                this.setState({
-                    error : error.message
-                })
+                setError("Internal Server Error !");
             });
     }
 
-    avatarUpdateClick = () => {
-        this.setState(prev => {
-            return {
-                avatar : !(prev.avatar)
-            }
-        })
+    const avatarUpdateClick = () => {
+        setAvatar(!avatar);
     }
 
-    aboutClickHandler = () => {
-        this.setState(prev => {
-            return {
-                about : !(prev.about)
-            }
-        })
+    const aboutClickHandler = () => {
+        setAbout(!about);
     }
 
-    updateAboutHandler = (e) => {
+    const updateAboutHandler = (e) => {
         e.preventDefault();
 
-        const value = this.textRef.current.value;
-        this.props.updateAbout(value, this.props.token);
+        const value = textRef.current.value;
+        props.updateAbout(value, props.token);
     }
 
-    render () {
-        let updateForm = null;
-        if (this.state.update) {
-            updateForm = (
-                <form 
-                    onSubmit={this.updateSubmitHandler}
-                    className = {classes.Update_Form}
-                >
-                    <input 
-                        type = "text" 
-                        placeholder = "New name" 
-                        ref = {this.newNameRef} 
-                    />
-                    <input 
-                        type = "email" 
-                        placeholder = "New E-Mail" 
-                        ref = {this.newEmailRef} 
-                    />
-                    <button className = {classes.Submit_Button}>
-                        Submit
-                    </button>
-                </form>
-            )
-        }  
-        
-        let deleteForm = null;
-        if (this.state.delete) {
-            deleteForm = (
-                <main className = {classes.Delete}>
-                    <button 
-                        className = {classes.Back}
-                        onClick = {this.deleteClickHandler}
-                    >Back</button>
-
-                    <button 
-                        className = {classes.Confirm}
-                        onClick = {this.confirmDeleteClickHandler}
-                    >Confirm</button>
-                </main>
-            );
-        }
-
-        let avatarForm = null;
-        if (this.state.avatar) {
-            avatarForm = (
-                <Dragdrop />
-            )
-        }
-
-        let aboutForm = null;
-        if (this.state.about) {
-            aboutForm = (
-                <form
-                    onSubmit = {this.updateAboutHandler}
-                    className = {classes.About_Form}
-                >
-                    <textarea 
-                        ref = {this.textRef}
-                        placeholder = "About"
-                    />
-                    <button>
-                        Submit
-                    </button>
-                </form>
-            )
-        }
-
-        let errorMessage = null;
-        if (this.state.error) {
-            errorMessage = <div className = {classes.ErrorMessage}> {this.state.error} </div>
-        }
-
-        let redirector = null;
-        if (!this.props.token) {
-            redirector = <Redirect to = '/' />
-        }
-
-        return (
-            <div className = {classes.Settings_Container}>
-                <Spinner 
-                    text = "Updating Profile"
-                    showSpinner = {this.props.spinner}
+    let updateForm = null;
+    if (update) {
+        updateForm = (
+            <form 
+                onSubmit={updateSubmitHandler}
+                className = {classes.Update_Form}
+            >
+                <input 
+                    type = "text" 
+                    placeholder = "New name" 
+                    ref = {newNameRef} 
                 />
-                {redirector}
-                {this.state.redirect ? <Redirect to='/profile/me' /> : null}
+                <input 
+                    type = "email" 
+                    placeholder = "New E-Mail" 
+                    ref = {newEmailRef} 
+                />
+                <button className = {classes.Submit_Button}>
+                    Submit
+                </button>
+            </form>
+        )
+    }  
+    
+    let delForm = null;
+    if (del) {
+        delForm = (
+            <main className = {classes.Delete}>
+                <button 
+                    className = {classes.Back}
+                    onClick = {delClickHandler}
+                >Back</button>
 
-                <div className = {classes.Redirect_To_Profile}>
-                    <Link to='/profile/me' > X </Link>
-                </div>
-                <div className = {classes.Setting_Container}>
+                <button 
+                    className = {classes.Confirm}
+                    onClick = {confirmDelClickHandler}
+                >Confirm</button>
+            </main>
+        );
+    }
 
-                    <div 
-                        className = {classes.Update_Avatar}
-                        onClick = {this.avatarUpdateClick}
-                    > 
-                        Update Avatar
-                    </div>
-                    {avatarForm}
-
-                    <div 
-                        className = {classes.Update_Profile}
-                        onClick = {this.updateClickHandler}
-                    > 
-                        Update Profile
-                    </div>
-                    {updateForm}
-
-                    <div 
-                        className = {classes.Delete_Profile}
-                        onClick = {this.deleteClickHandler}
-                    >
-                        Delete Profile
-                    </div>
-                    {deleteForm}
-
-                    <div
-                        className = {classes.Update_About}
-                        onClick = {this.aboutClickHandler}
-                    >
-                        Update About
-                    </div>
-                    {aboutForm}
-
-                    {errorMessage}
-                </div>
-            </div>
+    let avatarForm = null;
+    if (avatar) {
+        avatarForm = (
+            <Dragdrop />
         )
     }
+
+    let aboutForm = null;
+    if (about) {
+        aboutForm = (
+            <form
+                onSubmit = {updateAboutHandler}
+                className = {classes.About_Form}
+            >
+                <textarea 
+                    ref = {textRef}
+                    placeholder = "About"
+                />
+                <button>
+                    Submit
+                </button>
+            </form>
+        )
+    }
+
+    let redirector = null;
+    if (!props.token) {
+        redirector = <Redirect to = '/' />
+    }
+
+    return (
+        <div className = {classes.Settings_Container}>
+            <Spinner 
+                text = "Updating Profile"
+                showSpinner = {props.spinner}
+            />
+            {redirector}
+            {redirect ? <Redirect to='/profile/me' /> : null}
+
+            <div className = {classes.Redirect_To_Profile}>
+                <Link to='/profile/me' > X </Link>
+            </div>
+            <div className = {classes.Setting_Container}>
+
+                <div 
+                    className = {classes.Update_Avatar}
+                    onClick = {avatarUpdateClick}
+                > 
+                    Update Avatar
+                </div>
+                {avatarForm}
+
+                <div 
+                    className = {classes.Update_Profile}
+                    onClick = {updateClickHandler}
+                > 
+                    Update Profile
+                </div>
+                {updateForm}
+
+                <div 
+                    className = {classes.Delete_Profile}
+                    onClick = {delClickHandler}
+                >
+                    Delete Profile
+                </div>
+                {delForm}
+
+                <div
+                    className = {classes.Update_About}
+                    onClick = {aboutClickHandler}
+                >
+                    Update About
+                </div>
+                {aboutForm}
+            </div>
+        </div>
+    )
 }
 
 const mapStateToProps = state => {

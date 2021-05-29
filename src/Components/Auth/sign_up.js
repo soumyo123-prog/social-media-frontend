@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useRef} from 'react';
 import classes from './auth.module.css';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
@@ -8,76 +8,58 @@ import Aux from '../../HOC/auxil';
 import Name from '../Name/Name';
 import Spinner from '../Spinner/Spinner';
 
-class SignUp extends React.Component {
-    state = {
-        name : "",
-        email : "",
-        password : ""
-    }
-    
-    onChangeHandler = (event, field) => {
-        const value = event.target.value;
-        this.setState({
-            [field] : value
-        })
-    }
+const Signup = props => {
+    const nameRef = useRef(null);
+    const emailRef = useRef(null);
+    const passwordRef = useRef(null);
 
-    submitHandler = (event) => {
+    const submitHandler = (event) => {
         event.preventDefault();
-        this.props.authSignUp({
-            name : this.state.name,
-            email : this.state.email,
-            password : this.state.password
+        props.authSignUp({
+            name : nameRef.current.value,
+            email : emailRef.current.value,
+            password : passwordRef.current.value
         },"up");
     }
 
-    render () {
-        let errorMessage = null;
-        if (this.props.error) {
-            errorMessage = (
-                <div className={classes.Error_Message}>
-                    {this.props.error}
-                </div>
-            );
-        }
+    return (
+        <Aux>
+            <Name />
+            <Spinner 
+                showSpinner = {props.spinner}
+                text = "Creating account"
+            />
+            <div className={classes.Login_Form_Container}>
+                <form 
+                    className={classes.Login_Form}
+                    onSubmit={submitHandler}
+                >
+                    <input 
+                        type="text" 
+                        placeholder="Name"
+                        ref = {nameRef}
+                    />
 
-        return (
-            <Aux>
-                <Name />
-                <Spinner 
-                    showSpinner = {this.props.spinner}
-                    text = "Creating account"
-                />
-                <div className={classes.Login_Form_Container}>
-                    <form 
-                        className={classes.Login_Form}
-                        onSubmit={this.submitHandler}
-                    >
-                        <input 
-                            type="text" 
-                            placeholder="Name"
-                            onChange={(event) => this.onChangeHandler(event,"name")}
-                        ></input>
-                        <input 
-                            type="email" 
-                            placeholder="Email"
-                            onChange={(event) => this.onChangeHandler(event,"email")}
-                        ></input>
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            onChange={(event) => this.onChangeHandler(event,"password")}
-                        ></input>
-                        <button>
-                            Create
-                        </button>
-                    </form>
-                    {errorMessage}
-                    {this.props.token ? <Redirect to='/' /> : null}
-                </div>
-            </Aux>
-        )
-    }
+                    <input 
+                        type="email" 
+                        placeholder="Email"
+                        ref = {emailRef}
+                    />
+
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        ref = {passwordRef}
+                    />
+
+                    <button>
+                        Create
+                    </button>
+                </form>
+                {props.token ? <Redirect to='/' /> : null}
+            </div>
+        </Aux>
+    )
 }
 
 const mapStateToProps = (state) => {
@@ -95,4 +77,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

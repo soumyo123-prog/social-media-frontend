@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useState, useEffect} from 'react';
 import classes from './Search.module.css';
 import Redirector from '../Redirector/redirect';
 import * as types from '../../Store/Actions/index';
@@ -8,19 +8,18 @@ import {connect} from 'react-redux';
 
 let skip = 0;
 
-class Search extends React.Component {
-    state = {
-        users : [],
-        error : null
-    }
+const Search = props => {
+    
+    const [users, setUsers] = useState([]);
+    const [error, setError] = useState(null);
 
-    componentDidMount () {
-        this.usersCaller();
-    }
+    useEffect(() => {
+        usersCaller();
+    }, []);
 
-    usersCaller = () => {
+    const usersCaller = () => {
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + this.props.token ); 
+        myHeaders.append("Authorization", "Bearer " + props.token ); 
 
         var requestOptions = {
             method: 'GET',
@@ -28,96 +27,85 @@ class Search extends React.Component {
             redirect: 'follow'
         };
 
-        const url="/users?skip="+skip+'&name='+this.props.location.search.replace('?name=','');
+        const url="/users?skip="+skip+'&name='+props.location.search.replace('?name=','');
 
         fetch(url, requestOptions)
         .then(response => response.json())
         .then(users => {
-            this.setState({
-                users : users,
-                error : null 
-            })
+            setUsers(users);
+            setError(null);
         })
         .catch(error => {
-            this.setState({
-                users : [],
-                error : "Could not fetch results !"
-            })
+            setUsers([]);
+            setError("Internal Server Error !");
         });
     }
 
-    onClickHandler = () => {
-        this.props.history.goBack();
+    const onClickHandler = () => {
+        props.history.goBack();
     }
 
-    prevPage = () => {
+    const prevPage = () => {
         skip -= 5;
-        this.usersCaller();
+        usersCaller();
     }
 
-    nextPage = () => {
+    const nextPage = () => {
         skip += 5;
-        this.usersCaller();
+        usersCaller();
     }
 
-    findUser = (id) => {
-        this.props.fetchUser(id,this.props.token);
+    const findUser = (id) => {
+        props.fetchUser(id,props.token);
     }
 
-    render () {
-
-        let results = this.state.users.map(user => {
-            return (
-                <Link
-                    className = {classes.User}
-                    key = {user._id}
-                    id = {user._id}
-                    to = {'/profile/' + user._id}
-                    onClick = {() => this.findUser(user._id)}
-                >
-                    <div className = {classes.User_Avatar}>
-                        <img src = {'/users/'+user._id+'/avatar'} />
-                    </div>
-
-                    <div className = {classes.User_Details}>
-                        {user.name}
-                    </div>
-                </Link>
-            )
-        });
-
-        let errorMessage = null;
-        if (this.state.error) {
-            errorMessage = <div className = {classes.ErrorMessage}> {this.state.error} </div>
-        }
-
+   
+    let results = users.map(user => {
         return (
-            <div
-                className = {classes.Search_Container}
+            <Link
+                className = {classes.User}
+                key = {user._id}
+                id = {user._id}
+                to = {'/profile/' + user._id}
+                onClick = {() => findUser(user._id)}
             >
-                <Redirector />
-
-                <div className = {classes.Redirect_To_Profile}>
-                    <button onClick={this.onClickHandler}> X </button>
+                <div className = {classes.User_Avatar}>
+                    <img src = {'/users/'+user._id+'/avatar'} />
                 </div>
-                Search Results ....
 
-                {results}
-
-                <div className = {classes.Change_Buttons}>
-                    <button
-                        onClick = {this.prevPage}
-                        disabled = {skip === 0}
-                    > &larr; </button>
-
-                    <button
-                        onClick = {this.nextPage}
-                        disabled = {this.state.users.length < 5}
-                    > &rarr; </button>
+                <div className = {classes.User_Details}>
+                    {user.name}
                 </div>
-            </div>
+            </Link>
         )
-    }
+    });
+
+    return (
+        <div
+            className = {classes.Search_Container}
+        >
+            <Redirector />
+
+            <div className = {classes.Redirect_To_Profile}>
+                <button onClick={onClickHandler}> X </button>
+            </div>
+            Search Results ....
+
+            {results}
+
+            <div className = {classes.Change_Buttons}>
+                <button
+                    onClick = {prevPage}
+                    disabled = {skip === 0}
+                > &larr; </button>
+
+                <button
+                    onClick = {nextPage}
+                    disabled = {users.length < 5}
+                > &rarr; </button>
+            </div>
+        </div>
+    )
 }
 
 const mapStateToProps = (state) => {

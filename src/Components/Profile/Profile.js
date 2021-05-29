@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useState, useEffect, useRef} from 'react';
 import classes from './Profile.module.css';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -16,32 +16,28 @@ let scrollable = true;
 let isLiked = "rgb(252, 3, 127)";
 let isNotLiked = "rgb(240, 204, 222)";
 
-class Profile extends React.Component {
-    constructor(props) {
-        super(props);
-        this.postsRef = React.createRef();
-    }
+const Profile = props => {
 
-    state = {
-        showFullPost: false,
-        fullPost: {},
-        fileError: null,
-        canIncrease: true,
-        touchShow: false,
-        above : false
-    }
+    const [showFullPost, setShowFullPost] = useState(false);
+    const [fullPost, setFullPost] = useState({});
+    const [fileError, setFileError] = useState(null);
+    const [canIncrease, setCanIncrease] = useState(true);
+    const [touchShow, setTouchShow] = useState(false);
+    const [above, setAbove] = useState(false);
 
-    componentDidMount() {
-        if (this.props.posts.length === 0 && this.props.token) {
-            this.props.fetchPosts(this.props.token, 0);
+    const postsRef = useRef(null);
+
+    useEffect(() => {
+        if (props.posts.length === 0 && props.token) {
+            props.fetchPosts(props.token, 0);
         }
-    }
+    }, []);
 
-    deletePostHandler = id => {
-        const allPosts = this.props.posts.filter(post => post._id !== id);
+    const deletePostHandler = id => {
+        const allPosts = props.posts.filter(post => post._id !== id);
 
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + this.props.token);
+        myHeaders.append("Authorization", "Bearer " + props.token);
 
         var requestOptions = {
             method: 'DELETE',
@@ -51,57 +47,49 @@ class Profile extends React.Component {
 
         fetch("/posts/remove/" + id, requestOptions)
             .then(response => {
-                this.props.deletePost(allPosts);
-                this.props.getCount(false);
+                props.deletePost(allPosts);
+                props.getCount(false);
             })
             .catch(error => error);
     }
 
-    seeFullPost = (id) => {
-        const fullPost = this.props.posts.filter(post => post._id === id)[0];
+    const seeFullPost = (id) => {
+        const fullPost = props.posts.filter(post => post._id === id)[0];
 
-        this.setState({
-            showFullPost: true,
-            fullPost: fullPost
-        })
+        setShowFullPost(true);
+        setFullPost(fullPost);
     }
 
-    hideFullPost = () => {
-        this.setState({
-            showFullPost: false
-        })
+    const hideFullPost = () => {
+        setShowFullPost(false);
     }
 
-    postScrollHandler = (e) => {
+    const postScrollHandler = (e) => {
         if (e.target.scrollTop > 20) {
-            if (!this.state.above) {
-                this.setState({
-                    above: true
-                })
+            if (!above) {
+                setAbove(true);
             }
         } else {
-            if (this.state.above) {
-                this.setState({
-                    above: false
-                })
+            if (above) {
+                setAbove(false);
             }
         }
 
-        const maxSkip = Math.ceil(this.props.countPosts/5);
+        const maxSkip = Math.ceil(props.countPosts/5);
 
-        if (this.props.posts.length === this.props.countPosts) {
+        if (props.posts.length === props.countPosts) {
             return;
         }
 
-        const postDiv = this.postsRef.current;
+        const postDiv = postsRef.current;
         if (postDiv.scrollTop + postDiv.offsetHeight >= postDiv.scrollHeight - 100
             && scrollable) {
 
             scrollable = false;
-            if (this.state.canIncrease) {
+            if (canIncrease) {
                 if (skip < maxSkip) {
                     skip += 5;
-                    this.props.fetchPosts(this.props.token, skip);
+                    props.fetchPosts(props.token, skip);
                 }
             }
 
@@ -110,23 +98,23 @@ class Profile extends React.Component {
         }
     }
 
-    postLiker = (e, id) => {
+    const postLiker = (e, id) => {
         if (e.target.style.backgroundColor === isNotLiked) {
 
-            this.props.updateLiked(this.props.token, id, 1);
-            this.props.updateLikes(id, 1);
+            props.updateLiked(props.token, id, 1);
+            props.updateLikes(id, 1);
             e.target.style.backgroundColor = isLiked;
 
         } else {
 
-            this.props.updateLiked(this.props.token, id, 0);
-            this.props.updateLikes(id, 0);
+            props.updateLiked(props.token, id, 0);
+            props.updateLikes(id, 0);
             e.target.style.backgroundColor = isNotLiked;
 
         }
     }
 
-    onHoverHandler = (type, id) => {
+    const onHoverHandler = (type, id) => {
         const doc = document.getElementById(id);
 
         if (doc.childNodes) {
@@ -139,180 +127,175 @@ class Profile extends React.Component {
         }
     }
 
-    onTouchHandler = (id) => {
+    const onTouchHandler = (id) => {
         const doc = document.getElementById(id);
 
-        this.setState(prev => {
-            return {
-                touchShow: !(prev.touchShow)
-            }
-        })
+        setTouchShow(!touchShow);
 
         if (doc.childNodes) {
-            if (this.state.touchShow) {
+            if (touchShow) {
                 doc.childNodes[doc.childNodes.length - 1].style.display = 'block';
             } else {
                 doc.childNodes[doc.childNodes.length - 1].style.display = 'none';
             }
         }
     }
+    
+    const callBackPosts = post => {
+        let like = false;
 
-    render() {
-        const callBackPosts = post => {
-            let like = false;
+        if (props.liked) {
+            props.liked.forEach(el => {
+                if (post._id == el.post) {
+                    like = true;
+                    return;
+                }
+            });
+        }
 
-            if (this.props.liked) {
-                this.props.liked.forEach(el => {
-                    if (post._id == el.post) {
-                        like = true;
-                        return;
-                    }
-                });
-            }
+        const style = {
+            backgroundColor: isNotLiked
+        }
+        if (like) {
+            style.backgroundColor = isLiked;
+        }
 
-            const style = {
-                backgroundColor: isNotLiked
-            }
-            if (like) {
-                style.backgroundColor = isLiked;
-            }
-
-            let showHover = (
-                <div className={classes.Post_Hover}>
-                    <div className={classes.Post_Heading}>
-                        {post.heading}
-                    </div>
-
-                    <div className={classes.Like_Container}>
-                        <div
-                            className={classes.isNotLiked}
-                            onClick={(event) => this.postLiker(event, post._id)}
-                            style={style}
-                        />
-
-                        <span>{post.likes} Likes</span>
-                    </div>
-
-                    <button
-                        className={classes.FullPost}
-                        onClick={() => this.seeFullPost(post._id)}
-                    >Full</button>
+        let showHover = (
+            <div className={classes.Post_Hover}>
+                <div className={classes.Post_Heading}>
+                    {post.heading}
                 </div>
-            );
 
-            return (
-                <div
-                    className={classes.Post}
-                    key={post._id}
-                    id={post._id}
-                    onMouseEnter={() => this.onHoverHandler('over', post._id)}
-                    onMouseLeave={() => this.onHoverHandler('out', post._id)}
-                    onClick={window.innerWidth <= 680 ? () => this.onTouchHandler(post._id) : null}
-                >
+                <div className={classes.Like_Container}>
                     <div
-                        className={classes.Post_Picture}
-                        style={{
-                            backgroundImage: 'url(/posts/image/' + post._id + ')'
-                        }}
+                        className={classes.isNotLiked}
+                        onClick={(event) => postLiker(event, post._id)}
+                        style={style}
                     />
 
-                    <button
-                        className={classes.Delete_Post}
-                        onClick={() => this.deletePostHandler(post._id)}
-                    >X</button>
-
-                    {showHover}
+                    <span>{post.likes} Likes</span>
                 </div>
-            )
-        }
-        let posts = (this.props.posts.length > 0 ? this.props.posts.map(callBackPosts) : null);
 
-        if (this.props.error) {
-            posts = <div className={classes.ErrorMessage}> {this.state.error} </div>
-        }
-
-        let updateError = null;
-        if (this.state.fileError) {
-            updateError = <div className={classes.ErrorMessage}> {this.state.fileError} </div>
-        }
+                <button
+                    className={classes.FullPost}
+                    onClick={() => seeFullPost(post._id)}
+                >Full</button>
+            </div>
+        );
 
         return (
-            <div className={classes.Main}>
-                <Backdrop
-                    show={this.state.showFullPost}
-                    hide={this.hideFullPost}
-                />
-
-                <Top 
-                    show = {this.state.above}
-                    element = {this.postsRef}
-                />
-
-                <FullPost
-                    show={this.state.showFullPost}
-                    hide={this.hideFullPost}
-                    postId={this.state.fullPost._id}
-                    heading={this.state.fullPost.heading}
-                    content={this.state.fullPost.content}
-                />
-
-                <Redirector />
-                <Navbar />
-
+            <div
+                className={classes.Post}
+                key={post._id}
+                id={post._id}
+                onMouseEnter={() => onHoverHandler('over', post._id)}
+                onMouseLeave={() => onHoverHandler('out', post._id)}
+                onClick={window.innerWidth <= 680 ? () => onTouchHandler(post._id) : null}
+            >
                 <div
-                    className={classes.Profile_Container_1}
-                    ref={this.postsRef}
-                    onScroll={this.postScrollHandler}
-                >
-                    <div className={classes.Avatar_Container}>
-                        <div className={classes.Avatar}>
-                            <img
-                                src={'/users/' + this.props.id + '/avatar'}
-                            />
-                        </div>
-                        <div className={classes.Profile_Name}>
-                            {this.props.name}
-                        </div>
-                    </div>
+                    className={classes.Post_Picture}
+                    style={{
+                        backgroundImage: 'url(/posts/image/' + post._id + ')'
+                    }}
+                />
 
-                    <div className={classes.Profile_Details}>
-                        <div 
-                            className={classes.Profile_About}
-                        >
-                            {this.props.about}
-                        </div>
+                <button
+                    className={classes.Delete_Post}
+                    onClick={() => deletePostHandler(post._id)}
+                >X</button>
 
-                        <div className={classes.Profile_Settings}>
-                            <Link
-                                className={classes.Profile_Settings_Button}
-                                to='/profile/settings'
-                            >
-                                Edit Profile
-                            </Link>
-                        </div>
-                    </div>
-
-                    {updateError}
-
-                    <div className={classes.My_Posts}>
-                        {posts}
-                    </div>
-
-                </div>
-
-                <div
-                    className={classes.Add_Post}
-                >
-                    <Link
-                        to='/posts/add'
-                        className={classes.Add_Post_Button}
-                    >
-                        +
-                    </Link>
-                </div>
+                {showHover}
             </div>
         )
     }
+    let posts = (props.posts.length > 0 ? props.posts.map(callBackPosts) : null);
+
+    if (props.error) {
+        posts = <div className={classes.ErrorMessage}> {props.error} </div>
+    }
+
+    let updateError = null;
+    if (fileError) {
+        updateError = <div className={classes.ErrorMessage}> {fileError} </div>
+    }
+
+    return (
+        <div className={classes.Main}>
+            <Backdrop
+                show={showFullPost}
+                hide={hideFullPost}
+            />
+
+            <Top 
+                show = {above}
+                element = {postsRef}
+            />
+
+            <FullPost
+                show={showFullPost}
+                hide={hideFullPost}
+                postId={fullPost._id}
+                heading={fullPost.heading}
+                content={fullPost.content}
+            />
+
+            <Redirector />
+            <Navbar />
+
+            <div
+                className={classes.Profile_Container_1}
+                ref={postsRef}
+                onScroll={postScrollHandler}
+            >
+                <div className={classes.Avatar_Container}>
+                    <div className={classes.Avatar}>
+                        <img
+                            src={'/users/' + props.id + '/avatar'}
+                        />
+                    </div>
+                    <div className={classes.Profile_Name}>
+                        {props.name}
+                    </div>
+                </div>
+
+                <div className={classes.Profile_Details}>
+                    <div 
+                        className={classes.Profile_About}
+                    >
+                        {props.about}
+                    </div>
+
+                    <div className={classes.Profile_Settings}>
+                        <Link
+                            className={classes.Profile_Settings_Button}
+                            to='/profile/settings'
+                        >
+                            Edit Profile
+                        </Link>
+                    </div>
+                </div>
+
+                {updateError}
+
+                <div className={classes.My_Posts}>
+                    {posts}
+                </div>
+
+            </div>
+
+            <div
+                className={classes.Add_Post}
+            >
+                <Link
+                    to='/posts/add'
+                    className={classes.Add_Post_Button}
+                >
+                    +
+                </Link>
+            </div>
+        </div>
+    )
+    
 }
 
 const mapStateToProps = state => {

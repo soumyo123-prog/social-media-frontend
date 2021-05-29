@@ -1,56 +1,48 @@
-	import React from 'react';
-	import classes from './Navbar.module.css';
-	import * as types from '../../Store/Actions/index';
-	import {NavLink, withRouter} from 'react-router-dom';
-	import {connect} from 'react-redux';
+import {React, useState, useRef} from 'react';
+import classes from './Navbar.module.css';
+import * as types from '../../Store/Actions/index';
+import {NavLink, withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
 
-	import Aux from '../../HOC/auxil';
-	import Backdrop from '../Backdrop/Backdrop';
-	import Sidebar from '../Sidebar/Sidebar';
+import Aux from '../../HOC/auxil';
+import Backdrop from '../Backdrop/Backdrop';
+import Sidebar from '../Sidebar/Sidebar';
 
-	class Navbar extends React.Component{
-	constructor(props){
-		super(props);
-		this.searchContentRef = React.createRef();
-	}
+const Navbar = props => {
 
-	state = {
-		clicked : false,
-		showSidebar : false
-	}
+	const [clicked, setClicked] = useState(false);
+	const [showSidebar, setShowSidebar] = useState(false);
 
-	searchSubmitHandler = (e) => {
+	const searchContentRef = useRef(null);
+
+	const searchSubmitHandler = (e) => {
 		e.preventDefault();
-		if (this.searchContentRef.current.value) {
-			const url = '/search?name=' + this.searchContentRef.current.value;
-			this.props.history.push(decodeURIComponent(url));
+		if (searchContentRef.current.value) {
+			const url = '/search?name=' + searchContentRef.current.value;
+			props.history.push(decodeURIComponent(url));
 		} else {
 			return;
 		}
 	}
 
-	openSidebarClickHandler = () => {
-		this.setState({
-			showSidebar : true
-		})
+	const openSidebarClickHandler = () => {
+		setShowSidebar(true);
 	}
 
-	closeSidebarClickHandler = () => {
-		this.setState({
-			showSidebar : false
-		})
+	const closeSidebarClickHandler = () => {
+		setShowSidebar(false);
 	}
 
-	render () {
-		return (
+	
+	return (
 		<Aux>
 			<Backdrop 
-				show = {this.state.showSidebar}
-				hide = {this.closeSidebarClickHandler}
+				show = {showSidebar}
+				hide = {closeSidebarClickHandler}
 			/>
 
 			<Sidebar 
-				show = {this.state.showSidebar}
+				show = {showSidebar}
 			/>
 
 			<header
@@ -76,11 +68,11 @@
 					className = {classes.Search}
 				>
 					<div className = {classes.Search_Bar}>
-						<form onSubmit = {this.searchSubmitHandler}>
+						<form onSubmit = {searchSubmitHandler}>
 							<input 
 								type = "text"
 								placeholder = "Username"
-								ref = {this.searchContentRef}
+								ref = {searchContentRef}
 							/>
 							<button> GO </button>
 						</form>
@@ -88,7 +80,7 @@
 				</li>
 				<li
 					className = {classes.Sidebar_Opener}
-					onClick = {this.openSidebarClickHandler}
+					onClick = {openSidebarClickHandler}
 				>
 					<hr />
 					<hr />
@@ -97,23 +89,21 @@
 				</ul>
 			</nav>
 			</header>
-
 		</Aux>
-		)
-	}
-	}
+	)
+}
 
-	const mapStateToProps = state => {
-		return {
-			error : state.auth.error,
-			token : state.auth.token
-		}
+const mapStateToProps = state => {
+	return {
+		error : state.auth.error,
+		token : state.auth.token
 	}
+}
 
-	const mapDispatchToProps = dispatch => {
-		return {
-			logoutInit : (type,token) => dispatch(types.logout(type,token))
-		}
+const mapDispatchToProps = dispatch => {
+	return {
+		logoutInit : (type,token) => dispatch(types.logout(type,token))
 	}
+}
 
 export default connect(mapStateToProps,mapDispatchToProps)(withRouter(Navbar));
