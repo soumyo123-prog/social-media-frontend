@@ -6,6 +6,7 @@ import Navbar from '../Navbar/Navbar';
 import Redirector from '../Redirector/redirect';
 import Fullpost from '../FullPost/FullPost';
 import Backdrop from '../Backdrop/Backdrop';
+import Top from '../BackToTop/top';
 
 import {connect} from 'react-redux';
 
@@ -24,7 +25,8 @@ class Other extends React.Component {
     state = {
         canIncrease : true,
         seeFullPost : false,
-        fullPost : {}
+        fullPost : {},
+        above : false
     }
 
     componentDidMount () {
@@ -53,6 +55,22 @@ class Other extends React.Component {
     }
 
     postScrollHandler = (e) => {
+        if (e.target.scrollTop > 20) {
+            if (!this.state.above) {
+                this.setState({
+                    above: true
+                })
+            }
+        } else {
+            if (this.state.above) {
+                this.setState({
+                    above: false
+                })
+            }
+        }
+
+        const maxSkip = Math.ceil(this.props.countPosts/5);
+
         if (this.props.posts.length === this.props.countPosts) {
             return;
         }
@@ -63,10 +81,11 @@ class Other extends React.Component {
 
                 scrollable = false;
                 if (this.state.canIncrease) { 
-                    skip += 5; 
-                    this.props.fetchPosts(this.props.match.params.id,this.props.token, skip);
+                    if (skip < maxSkip) {
+                        skip += 5; 
+                        this.props.fetchPosts(this.props.match.params.id,this.props.token, skip);
+                    }
                 }
-
         } else {
             scrollable = true;
         }
@@ -196,6 +215,11 @@ class Other extends React.Component {
                 <Backdrop 
                     show = {this.state.seeFullPost}
                     hide = {this.hideFullPost}
+                />
+
+                <Top 
+                    show = {this.state.above}
+                    element = {this.scrollRef}
                 />
 
                 <Fullpost 

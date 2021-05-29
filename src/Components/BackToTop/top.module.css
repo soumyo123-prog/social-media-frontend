@@ -8,4 +8,14 @@
     border : 0;
     border-radius: 10px;
     background-color : #3dd178;
+
+    transition : all 0.2s linear;
+}
+
+.Top_Visible {
+    opacity : 1;
+}
+
+.Top_Invisible {
+    opacity: 0;
 }

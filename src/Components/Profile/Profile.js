@@ -28,7 +28,7 @@ class Profile extends React.Component {
         fileError: null,
         canIncrease: true,
         touchShow: false,
-        showScrollTop : false
+        above : false
     }
 
     componentDidMount() {
@@ -73,6 +73,22 @@ class Profile extends React.Component {
     }
 
     postScrollHandler = (e) => {
+        if (e.target.scrollTop > 20) {
+            if (!this.state.above) {
+                this.setState({
+                    above: true
+                })
+            }
+        } else {
+            if (this.state.above) {
+                this.setState({
+                    above: false
+                })
+            }
+        }
+
+        const maxSkip = Math.ceil(this.props.countPosts/5);
+
         if (this.props.posts.length === this.props.countPosts) {
             return;
         }
@@ -83,8 +99,10 @@ class Profile extends React.Component {
 
             scrollable = false;
             if (this.state.canIncrease) {
-                skip += 5;
-                this.props.fetchPosts(this.props.token, skip);
+                if (skip < maxSkip) {
+                    skip += 5;
+                    this.props.fetchPosts(this.props.token, skip);
+                }
             }
 
         } else {
@@ -140,7 +158,6 @@ class Profile extends React.Component {
     }
 
     render() {
-        console.log(skip);
         const callBackPosts = post => {
             let like = false;
 
@@ -226,6 +243,11 @@ class Profile extends React.Component {
                     hide={this.hideFullPost}
                 />
 
+                <Top 
+                    show = {this.state.above}
+                    element = {this.postsRef}
+                />
+
                 <FullPost
                     show={this.state.showFullPost}
                     hide={this.hideFullPost}
@@ -242,7 +264,6 @@ class Profile extends React.Component {
                     ref={this.postsRef}
                     onScroll={this.postScrollHandler}
                 >
-
                     <div className={classes.Avatar_Container}>
                         <div className={classes.Avatar}>
                             <img

@@ -115,15 +115,17 @@ export const tryAutoSignIn = () => {
                 dispatch(authSuccess(user,token));
             })
             .catch(error => {
+                localStorage.removeItem('user');
+                localStorage.removeItem('token');
+
                 dispatch(hideSpinner());
                 dispatch(authFailed("Login Again !"));
             });
 
         } else {
-            if (token == undefined || user == undefined) {
-                localStorage.removeItem('user');
-                localStorage.removeItem('token');
-            }
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+            
             dispatch(hideSpinner());
             dispatch(authFailed("SignIn Again !"));
         }
