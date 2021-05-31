@@ -1,59 +1,56 @@
 .Main {
-	height : 100%;
+    height : 100%;
 }
 
 .Profile_Container_1 {
-	position : absolute;
-	bottom : 30px;
-	top : 30px;
-	left : 50%;
-	transform : translateX(-50%);
-
-	width : 80%;
-	padding : 20px;
-	overflow : auto;
+    position : absolute;
+    bottom : 30px;
+    top : 30px;
+    left : 50%;
+    transform : translateX(-50%);
+    width : 80%;
+    padding : 20px;
+    overflow : auto;
+    display : flex;
+    flex-wrap : wrap;
 }
 
 .Avatar_Container{
-	float : left;
-	height : 220px;
-	width : 200px;
+    height : 220px;
+    width : 200px;
 }
 
 .Avatar {
-	width : 100%;
-	overflow : hidden;
-	border-radius : 10px;
-	float : left;
-	height : 200px;
+    width : 200px;
+    height : 200px;
+    overflow : hidden;
+    border-radius : 10px;
 }
 
 .Avatar img {
-	width : 200px;
-	height : 200px;
-	margin-top : auto;
-	margin-bottom : auto;
-	border-radius : 10px;
-	object-position: center;
+    width : 200px;
+    height : 200px;
+    margin-top : auto;
+    margin-bottom : auto;
+    border-radius : 10px;
+    object-position: center;
 }
 
 .Profile_Name {
-	width : 100%;
-	height : 20px;
-	text-align : center;
-	color : white;
-	padding : 5%;
-	font-size : 1.1em;
-	text-transform: capitalize;
-	letter-spacing : 2px;
-	float : left;
+    width : 100%;
+    height : 20px;
+    text-align : center;
+    color : white;
+    padding : 5%;
+    font-size : 1.1em;
+    text-transform: capitalize;
+    letter-spacing : 2px;
 }
 
 .Profile_Details {
-	float : left;
-	width : calc(100% - 200px);
-	height : 200px;
-	color : white;
+    width : calc(100% - 200px);
+    height : 200px;
+    color : white;
 }
 
 .Profile_About {
@@ -77,115 +74,165 @@
     background-color: #5962e3;
 }
 
+.Profile_Settings {
+    display : block;
+    width : 40%;
+    height : 40px;
+    margin-left: auto;
+    margin-right : auto;
+    border-radius: 10px;
+    background: #5962e3;
+    text-align: center;
+} 
+
+.Profile_Settings_Button {
+    display : block;
+    color : white;
+    text-decoration : none;
+    width : 100%;
+    height : 100%;
+    padding : 10px;
+}
+
 .My_Posts {
-float : left;
-width : 100%;
-margin-top : 20px;
+    width : 100%;
+    margin-top : 50px;
+    display : flex;
+    justify-content : space-evenly;
+    flex-wrap : wrap;
 }
 
 .Post {
-float : left;
-height : 250px;
-width : 50%;
-border : 5px solid #292a2b;
-margin-bottom : 5px;
-position : relative;
-z-index : 50;
-border-radius: 10px;
+    height : 250px;
+    width : 250px;
+    margin : 5px;
+    position : relative;
+    z-index : 50;
+    border-radius: 10px;
 }
 
 .Post_Hover {
-display : none;
-position : absolute;
-top : 0;
-height : 100%;
-width : 100%;
-z-index : 70;
-background : rgba(0,0,0,0.8);
-color : white;
+    display : none;
+    position : absolute;
+    top : 0;
+    height : 100%;
+    width : 100%;
+    z-index : 70;
+    background : rgba(0,0,0,0.8);
+    color : white;
 }
 
 .Post_Picture {
-border-radius: 5px;
-height : 100%;
-background-repeat: no-repeat;
-background-size : cover;
-background-position : center;
+    border-radius: 5px;
+    height : 100%;
+    background-repeat: no-repeat;
+    background-size : cover;
+    background-position : center;
 }
 
 .Post_Heading {
-font-size: 1.2em;
-font-weight : bold;
-width : 100%;
+    font-size: 1.2em;
+    font-weight : bold;
+    width : 100%;
+}
+
+.Delete_Post {
+    display : inline-block;
+    background : transparent;
+    color : white;
+    position : absolute;
+    top : 0;
+    right : 0;
+    z-index : 80;
+    border : 0;
+    font-size: 1.2em;
+    scroll-padding : 2px;
+}
+
+.Delete_Post:hover {
+    cursor : pointer;
+}
+
+.Delete_Post:focus {
+    outline : 0;
 }
 
 .Like_Container {
-width : 50%;
-height : 40px;
-position: absolute;
-bottom : 0;
-left : 0;
-padding : 10px;
+    width : 50%;
+    height : 40px;
+    position: absolute;
+    bottom : 0;
+    left : 0;
+    padding : 10px;
 }
 
-.ErrorMessage {
-	float : left;
-	width : 100%;
-	height : 50px;
-	font-size: 1.2em;
-	border-radius: 5px;
-	border : 1px solid black;
-	background-color : crimson;
-	color : white;
-	text-align : center;
-	padding : 10px;
+.Add_Post {
+    position : absolute;
+    bottom : 0;
+    height : 30px;
+    width : 100%;
+}
+
+.Add_Post_Button {
+    color : black;
+    text-decoration: none;
+    display : block;
+    width : 30px;
+    height : 30px;
+    text-align : center;
+    margin-left: auto;
+    margin-right : auto;
+    background : #43bf7d;
+    border-radius: 50%;
+    border : 1px solid black;
+    padding : 4px;
+    font-weight: bold;
 }
 
 .FullPost {
-position : absolute;
-bottom : 0;
-right : 0;
-display : block;
-width : 50%;
-height : 40px;
-border : 0;
-color : white;
-background : #5962e3;
-border-top-left-radius: 5px;
-border-bottom-right-radius: 5px;
+    position : absolute;
+    bottom : 0;
+    right : 0;
+    display : block;
+    width : 50%;
+    height : 40px;
+    border : 0;
+    color : white;
+    background : #5962e3;
+    border-top-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    z-index : 80;
 }
 
 .FullPost:hover {
-cursor : pointer;
+    cursor : pointer;
 }
 
 .FullPost:focus {
-outline : 0;
+    outline : 0;
 }
 
 .isNotLiked {
-height : 100%;
-display : inline-block;
-width : 20px;
-margin-right : 10px;
-border-radius : 50%;
+    height : 100%;
+    display : inline-block;
+    width : 20px;
+    margin-right : 10px;
+    border-radius : 50%;
 }
 
 @media (max-width : 680px) {
+    .Profile_Container_1 {
+        width : 100%;
+    }
+
 	.Avatar_Container {
-		float : none;
 		margin-left : auto;
 		margin-right: auto;
 	}
 
 	.Profile_Details {
-		float : none;
 		width : 100%;
 		height : auto;
-	}
-
-	.Post {
-		width : 100%;
 	}
 
 	.Like_Container {
@@ -194,6 +241,17 @@ border-radius : 50%;
 
 	.FullPost {
 		width : 30%;
+	}
+
+    .Profile_About {
+        height : 200px;
+        margin-top : 20px;
+    }
+}
+
+@media (max-width : 400px) {
+	.Profile_Settings {
+		width : 70%;
 	}
 }
 
