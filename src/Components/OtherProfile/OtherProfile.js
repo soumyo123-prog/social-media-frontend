@@ -4,8 +4,6 @@ import * as types from '../../Store/Actions/index';
 
 import Navbar from '../Navbar/Navbar';
 import Redirector from '../Redirector/redirect';
-import Fullpost from '../FullPost/FullPost';
-import Backdrop from '../Backdrop/Backdrop';
 import Top from '../BackToTop/top';
 
 import {connect} from 'react-redux';
@@ -19,35 +17,29 @@ let isNotLiked = "rgb(240, 204, 222)";
 const Other = props => {
     
     const [canIncrease, setCanIncrease] = useState(true);
-    const [seeFullPost, setSeeFullPost] = useState(false);
-    const [fullPost, setFullPost] = useState({});
     const [above, setAbove] = useState(false);
     const [touchShow, setTouchShow] = useState(false);
 
     const scrollRef = useRef(null);
 
     useEffect(() => {
+        props.fetchProfile(props.match.params.id ,props.token);
+
         if (props.token && props.posts.length === 0) {
             props.fetchPosts(props.match.params.id,props.token,0);
         }
     }, []);
 
     useEffect(() => {
+        
+
         return () => {
             props.clearProfile();
         }
-    },[]);
+    }, []);
 
     const showFullPost = (id) => {
-        const fullPost = props.posts.filter(post => post._id === id)[0];
-
-        setSeeFullPost(true);
-        setFullPost(fullPost);
-    }
-
-    const hideFullPost = () => {
-        setSeeFullPost(false);
-        setFullPost({});
+        props.history.push('/posts/' + id);
     }
 
     const postScrollHandler = (e) => {
@@ -150,10 +142,6 @@ const Other = props => {
                         {post.heading}
                     </div>
 
-                    <div className = {classes.Post_Content}>
-                        {post.content}
-                    </div>
-
                     <div className = {classes.Like_Container}>
 
                         <div
@@ -165,10 +153,6 @@ const Other = props => {
                             <span>{post.likes} Likes</span>
                     </div>
 
-                    <button
-                        className = {classes.FullPost}
-                        onClick = {() => showFullPost(post._id)}
-                    >Full</button>
                 </div>
             )
 
@@ -188,6 +172,11 @@ const Other = props => {
                         }}
                     />
 
+                    <button
+                        className = {classes.FullPost}
+                        onClick = {() => showFullPost(post._id)}
+                    >Full</button>
+
                     {showHover}
 
                 </div>
@@ -200,22 +189,9 @@ const Other = props => {
             <Navbar />
             <Redirector />
 
-            <Backdrop 
-                show = {seeFullPost}
-                hide = {hideFullPost}
-            />
-
             <Top 
                 show = {above}
                 element = {scrollRef}
-            />
-
-            <Fullpost 
-                show = {seeFullPost}
-                hide = {hideFullPost}
-                postId = {fullPost._id}
-                heading = {fullPost.heading}
-                content = {fullPost.content}
             />
 
             <div
@@ -266,6 +242,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchPosts : (id,token,skip) => dispatch(types.fetchOtherPosts(id,token,skip)),
+        fetchProfile : (id, token) => dispatch(types.fetchOtherProfile(id, token)),
         clearProfile : () => dispatch(types.clearOtherProfile()),
         updateLiked : (token,id,type) => dispatch(types.updateLiked(token,id,type)),
         updateLikesOthers : (id,type) => dispatch(types.updateLikesOthers(id,type))

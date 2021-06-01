@@ -1,7 +1,7 @@
 import {React, useRef} from 'react';
 import classes from './auth.module.css';
 import {connect} from 'react-redux';
-import {Redirect} from 'react-router-dom';
+import {Redirect, Link} from 'react-router-dom';
 
 import * as types from '../../Store/Actions/index';
 import Aux from '../../HOC/auxil';
@@ -9,6 +9,8 @@ import Name from '../Name/Name';
 import Spinner from '../Spinner/Spinner';
 
 const Signin = props => {
+    const comp = true;
+
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
 
@@ -49,6 +51,11 @@ const Signin = props => {
                     </button>
                 </form>
                 {props.token ? <Redirect to='/' /> : null}
+
+                <div className = {classes.Already}>
+                    Don't Have an Account ?
+                    <Link to = '/auth/createAcc'> {comp ? "Create" : "Login"} </Link>
+                </div>
             </div>
         </Aux>
     )

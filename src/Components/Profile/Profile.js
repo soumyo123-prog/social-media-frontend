@@ -6,8 +6,6 @@ import * as types from '../../Store/Actions/index';
 
 import Navbar from '../Navbar/Navbar';
 import Redirector from '../Redirector/redirect';
-import Backdrop from '../Backdrop/Backdrop';
-import FullPost from '../FullPost/FullPost';
 import Top from '../BackToTop/top';
 
 let skip = 0;
@@ -18,8 +16,6 @@ let isNotLiked = "rgb(240, 204, 222)";
 
 const Profile = props => {
 
-    const [showFullPost, setShowFullPost] = useState(false);
-    const [fullPost, setFullPost] = useState({});
     const [fileError, setFileError] = useState(null);
     const [canIncrease, setCanIncrease] = useState(true);
     const [touchShow, setTouchShow] = useState(false);
@@ -54,14 +50,7 @@ const Profile = props => {
     }
 
     const seeFullPost = (id) => {
-        const fullPost = props.posts.filter(post => post._id === id)[0];
-
-        setShowFullPost(true);
-        setFullPost(fullPost);
-    }
-
-    const hideFullPost = () => {
-        setShowFullPost(false);
+        props.history.push('/posts/' + id);
     }
 
     const postScrollHandler = (e) => {
@@ -176,10 +165,6 @@ const Profile = props => {
                     <span>{post.likes} Likes</span>
                 </div>
 
-                <button
-                    className={classes.FullPost}
-                    onClick={() => seeFullPost(post._id)}
-                >Full</button>
             </div>
         );
 
@@ -204,6 +189,11 @@ const Profile = props => {
                     onClick={() => deletePostHandler(post._id)}
                 >X</button>
 
+                <button
+                    className={classes.FullPost}
+                    onClick={() => seeFullPost(post._id)}
+                >Full</button>
+
                 {showHover}
             </div>
         )
@@ -221,22 +211,9 @@ const Profile = props => {
 
     return (
         <div className={classes.Main}>
-            <Backdrop
-                show={showFullPost}
-                hide={hideFullPost}
-            />
-
             <Top 
                 show = {above}
                 element = {postsRef}
-            />
-
-            <FullPost
-                show={showFullPost}
-                hide={hideFullPost}
-                postId={fullPost._id}
-                heading={fullPost.heading}
-                content={fullPost.content}
             />
 
             <Redirector />

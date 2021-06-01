@@ -1,21 +1,12 @@
 import React from 'react';
 import classes from './Home.module.css';
+import Create from '../Auth/sign_up';
+
 import {NavLink} from 'react-router-dom';
 
 const isNotAuth = props => {
     return(
-        <ul className={classes.isNot}>
-            <li>
-                <NavLink to='/auth/createAcc'>
-                    Create
-                </NavLink>
-            </li>
-            <li>
-                <NavLink to='/auth/login'>
-                    Login
-                </NavLink>
-            </li>
-        </ul>
+        <Create />
     )
 }
 

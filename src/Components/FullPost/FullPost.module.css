@@ -1,47 +1,62 @@
-.Modal {
-    position : fixed;
-    height : 70%;
-    top : 15%;
-    bottom : 15%;
-    width : 80%;
-    left : 10%;
-    right : 10%;
-    z-index: 150;
-    background : white;
-
-    animation: loadFullPost 0.5s ease-out;
+.Fullpost_Container {
+    width : 100%;
+    height: 100%;
+    padding : 20px;
+    position: relative;
+    animation : bottomToTop 0.4s ease-out;
 }
 
-.Image_Container {
-    height : 100%;
-    width : 25%;
-    float : left;
+.GoBackButton {
+    display : block;
+    width : 30px;
+    height : 30px;
+    color : white;
+    outline : 0;
+    border : 2px solid white;
+    border-radius : 50%;
+    background : transparent;
+    position : absolute;
+    right : 20px;
+    cursor : pointer;
 }
 
-.Image_Container img {
-    width : 95%;
+.Fullpost {
+    margin-top : 30px;
+    width : 100%;
+    display : flex;
+    flex-direction : column;
+    align-items : center;
+    justify-content : center;
+    color : white;
 }
 
-.Post_Content, .Post_Heading {
-    float : left;
-    width : 75%;
+.PostHeading {
+    width : 100%;
+    margin-top : 30px;
+    margin-bottom : 30px;
+    font-size : 1.2em;
+    border-radius : 10px;
+    color : white;
+    background : #5962e3;
+    padding : 20px;
+    text-align : center;
 }
 
-.Post_Heading {
-    font-size : 1.4em;
-    font-weight : bold;
+.PostContent {
+    width : 100%;
+    background : #ff9c38;
+    color : black;
+    margin-bottom: 30px;
+    border-radius : 10px;
+    padding : 20px;
 }
 
-.Post_Content {
-    overflow : hidden;
-}
-
-@keyframes loadFullPost {
+@keyframes bottomToTop {
     0% {
-        opacity : 0;
+        transform : translateY(100%);
     }
 
     100% {
-        opacity: 100%;
+        transform : translateY(0);
     }
 }

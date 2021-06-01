@@ -7,6 +7,7 @@ import {withRouter, Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 let skip = 0;
+const font = ['Ubuntu Mono', 'monospace', 'monospace', 'Droid Sans Fallback'];
 
 const Search = props => {
     
@@ -54,20 +55,13 @@ const Search = props => {
         skip += 5;
         usersCaller();
     }
-
-    const findUser = (id) => {
-        props.fetchUser(id,props.token);
-    }
-
    
     let results = users.map(user => {
         return (
             <Link
                 className = {classes.User}
                 key = {user._id}
-                id = {user._id}
                 to = {'/profile/' + user._id}
-                onClick = {() => findUser(user._id)}
             >
                 <div className = {classes.User_Avatar}>
                     <img src = {'/users/'+user._id+'/avatar'} />

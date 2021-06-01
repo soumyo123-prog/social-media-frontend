@@ -4,16 +4,21 @@
     margin-left: auto;
     border : 1px solid black;
     margin-top : 100px;
-    padding : 30px;
+    padding : 20px;
     border-radius: 10px;
     background-color: #ff9c38;
 }
 
+.Login_Form {
+    display : flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}   
+
 .Login_Form_Container input {
     display : block;
     width : 80%;
-    margin-right: auto;
-    margin-left: auto;
     margin-bottom: 20px;
     height : 40px;
     background-color: #ff9c38;
@@ -33,8 +38,6 @@
     display : block;
     width : 30%;
     font-size : 1.1em;
-    margin-right: auto;
-    margin-left: auto;
     border-radius : 5px;
     border : 0;
     color : white;
@@ -50,31 +53,28 @@
     cursor : pointer;
 }
 
-.Error_Message {
-    text-align : center;
-    width : 80%;
-    background : #f55858;
-    color : white;
-    height : 30px;
-    font-size : 1.3em;
-    margin-right: auto;
-    margin-left: auto;
-    margin-top : 20px;
-    border-radius : 5px;
+.Already {
+    text-align: center;
+    margin-top : 10px;
+}
+
+.Already a {
+    color : #5962e3;
+    text-decoration: none;
 }
 
 @media (max-width: 500px) {
     .Login_Form_Container {
-        padding : 10px;
+        width : 95%;
     }
 
     .Login_Form_Container input {
-        font-size : 4vw;
+        font-size : 1rem;
         height : 30px;
     }
 
     .Login_Form_Container button {
+        font-size : 1rem;
         width : 50%;
-        font-size : 4vw;
     }
 }

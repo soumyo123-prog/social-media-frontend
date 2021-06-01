@@ -12,7 +12,6 @@ const home = props => {
 
     return(
         <div className = {classes.Home}>
-            {props.isAuthenticated ? null : <Name />}
             {show}
         </div>
     )

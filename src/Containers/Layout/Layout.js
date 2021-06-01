@@ -10,6 +10,7 @@ import Settings from '../../Components/ProfileSettings/settings';
 import NewPost from '../../Components/NewPost/NewPost';
 import Search from '../../Components/Search/Search';
 import Other from '../../Components/OtherProfile/OtherProfile';
+import Fullpost from '../../Components/FullPost/FullPost';
 
 const Layout = (props) => {
     return (
@@ -23,6 +24,7 @@ const Layout = (props) => {
                 <Route path = '/posts/add' exact component = {NewPost} />
                 <Route path = '/search' exact component = {Search} />
                 <Route path = '/profile/:id' exact component = {Other} />
+                <Route path = '/posts/:id' exact component = {Fullpost} />
             </Switch>
         </div>
     )
