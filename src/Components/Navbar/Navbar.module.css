@@ -56,7 +56,7 @@
 
 .Search_Bar input {
 	height : 100%;
-	display : inline-block;
+	float : left;
 	width : 80%;
 	border : 0;
 	border-bottom : 1px solid gray;
@@ -71,6 +71,7 @@
 }
 
 .Search_Bar button {
+    float : left;
 	width : 20%;
 	border-top-right-radius: 5px;
 	border-bottom-right-radius: 5px;
@@ -81,6 +82,10 @@
 
 .Search_Bar button:focus {
 	outline : 0;
+}
+
+.Search_Bar button img {
+    height : 100%;
 }
 
 .Sidebar_Opener {

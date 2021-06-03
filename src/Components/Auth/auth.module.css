@@ -58,9 +58,12 @@
     margin-top : 10px;
 }
 
-.Already a {
+.Already button {
+    background : transparent;
     color : #5962e3;
-    text-decoration: none;
+    display : inline;
+    width : auto;
+    font-weight: bold;
 }
 
 @media (max-width: 500px) {

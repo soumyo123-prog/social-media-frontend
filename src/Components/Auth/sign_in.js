@@ -54,7 +54,7 @@ const Signin = props => {
 
                 <div className = {classes.Already}>
                     Don't Have an Account ?
-                    <Link to = '/auth/createAcc'> {comp ? "Create" : "Login"} </Link>
+                    <button onClick = {props.toggle} >Create</button>
                 </div>
             </div>
         </Aux>
@@ -72,7 +72,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        authSignIn : (details, value) => dispatch(types.authInit(details,value))
+        authSignIn : (details, value) => dispatch(types.authInit(details,value)),
+        toggle : () => dispatch(types.toggleAuth())
     }
 }
 

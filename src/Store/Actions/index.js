@@ -12,7 +12,8 @@ export {
     updateLiked,
     updateAbout,
     showSpinner,
-    hideSpinner
+    hideSpinner,
+    toggleAuth
 } from './auth';
 
 export {

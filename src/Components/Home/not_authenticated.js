@@ -1,13 +1,22 @@
 import React from 'react';
-import classes from './Home.module.css';
 import Create from '../Auth/sign_up';
+import Login from '../Auth/sign_in';
 
-import {NavLink} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 const isNotAuth = props => {
-    return(
-        <Create />
-    )
+    let show = <Create />
+    if (props.login) {
+        show = <Login />
+    }
+
+    return show;
 }
 
-export default isNotAuth;
+const mapStateToProps = state => {
+    return {
+        login : state.auth.login
+    }
+}
+
+export default connect(mapStateToProps)(isNotAuth);

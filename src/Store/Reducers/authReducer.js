@@ -5,7 +5,8 @@ const initialState = {
     token: null,
     error: null,
     redirectPath: null,
-    spinner : false
+    spinner : false,
+    login : false
 };
 
 const authStart = (state, action) => {
@@ -148,6 +149,13 @@ const hideSpinner = (state, action) => {
     return prevState;
 }
 
+const switchAuth = (state, action) => {
+    const prevState = { ...state };
+    prevState.login = !(prevState.login);
+
+    return prevState;
+}
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actions.AUTH_START: return authStart(state, action);
@@ -166,6 +174,7 @@ const reducer = (state = initialState, action) => {
         case actions.UPDATE_LIKED_FAILURE : return updateAboutFailure(state, action);
         case actions.SHOW_SPINNER : return showSpinner(state, action);
         case actions.HIDE_SPINNER : return hideSpinner(state, action);
+        case actions.SWITCH_AUTH : return switchAuth(state, action);
 
         default: return state;
     }

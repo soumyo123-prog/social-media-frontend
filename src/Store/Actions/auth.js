@@ -1,6 +1,12 @@
 import * as actions from './actions';
 import * as types from './index';
 
+export const toggleAuth = () => {
+    return {
+        type : actions.SWITCH_AUTH
+    }
+}
+
 export const showSpinner = () => {
     return {
         type : actions.SHOW_SPINNER

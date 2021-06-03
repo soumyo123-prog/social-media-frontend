@@ -8,6 +8,10 @@ import Aux from '../../HOC/auxil';
 import Backdrop from '../Backdrop/Backdrop';
 import Sidebar from '../Sidebar/Sidebar';
 
+import search from '../../Assets/search-icon.svg'
+import {FaHome} from 'react-icons/fa';
+import {CgProfile} from 'react-icons/cg';
+
 const Navbar = props => {
 
 	const [clicked, setClicked] = useState(false);
@@ -54,14 +58,14 @@ const Navbar = props => {
 				<ul className={classes.Navlist}>
 				<li>
 					<NavLink to='/'>
-						Home
+                        <FaHome size="1.3em"/> Home
 					</NavLink>
 				</li>
 				<li
 					className = {classes.Profile}
 				>
 					<NavLink to='/profile/me'> 
-						Profile 
+						<CgProfile size="1.3em"/> Profile 
 					</NavLink>
 				</li>
 				<li
@@ -74,7 +78,9 @@ const Navbar = props => {
 								placeholder = "Username"
 								ref = {searchContentRef}
 							/>
-							<button> GO </button>
+							<button>
+                                <img src={search} />
+                            </button>
 						</form>
 					</div>
 				</li>

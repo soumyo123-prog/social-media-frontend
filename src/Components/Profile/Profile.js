@@ -8,6 +8,8 @@ import Navbar from '../Navbar/Navbar';
 import Redirector from '../Redirector/redirect';
 import Top from '../BackToTop/top';
 
+import {AiOutlineZoomIn} from 'react-icons/ai';
+
 let skip = 0;
 let scrollable = true;
 
@@ -192,7 +194,9 @@ const Profile = props => {
                 <button
                     className={classes.FullPost}
                     onClick={() => seeFullPost(post._id)}
-                >Full</button>
+                >
+                    <AiOutlineZoomIn size="2em"/>
+                </button>
 
                 {showHover}
             </div>

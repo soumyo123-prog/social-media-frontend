@@ -62,7 +62,7 @@ const Signup = props => {
 
                 <div className = {classes.Already}>
                     Already have an account ?
-                    <Link to = '/auth/login'> {comp ? "Create" : "Login"} </Link>
+                    <button onClick = {props.toggle} >Login</button>
                 </div>
             </div>
         </Aux>
@@ -80,7 +80,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
     return {
         authSignUp : (details, value) => dispatch(types.authInit(details, value)),
-        pathChange : () => dispatch(types.redirected())
+        pathChange : () => dispatch(types.redirected()),
+        toggle : () => dispatch(types.toggleAuth())
     }
 }
 

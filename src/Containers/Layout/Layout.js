@@ -17,14 +17,19 @@ const Layout = (props) => {
         <div className={classes.Layout}>
             <Switch>
                 <Route path = '/' exact component = {Home} />
-                <Route path = '/auth/createAcc' exact component = {Create} />
-                <Route path = '/auth/login' exact component = {Login} />
                 <Route path = '/profile/me' exact component = {Profile} />
                 <Route path = '/profile/settings' exact component = {Settings} />
                 <Route path = '/posts/add' exact component = {NewPost} />
                 <Route path = '/search' exact component = {Search} />
                 <Route path = '/profile/:id' exact component = {Other} />
                 <Route path = '/posts/:id' exact component = {Fullpost} />
+                {/* <Route path = '*' render = {() => {
+                    return (
+                        <div>
+                            404 error
+                        </div>
+                    )
+                }} /> */}
             </Switch>
         </div>
     )

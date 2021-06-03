@@ -8,6 +8,8 @@ import Top from '../BackToTop/top';
 
 import {connect} from 'react-redux';
 
+import {AiOutlineZoomIn} from 'react-icons/ai';
+
 let skip = 0;
 let scrollable = true;
 
@@ -173,9 +175,11 @@ const Other = props => {
                     />
 
                     <button
-                        className = {classes.FullPost}
-                        onClick = {() => showFullPost(post._id)}
-                    >Full</button>
+                        className={classes.FullPost}
+                        onClick={() => showFullPost(post._id)}
+                    >
+                        <AiOutlineZoomIn size="2em"/>
+                    </button>
 
                     {showHover}
 

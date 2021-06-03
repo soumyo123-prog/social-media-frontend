@@ -1,11 +1,9 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import classes from './Home.module.css';
 
-import Name from '../Name/Name';
+import {connect} from 'react-redux';
 import IsAuth from './authenticated';
 import IsNotAuth from './not_authenticated';
-
-import classes from './Home.module.css';
 
 const home = props => {
     const show = props.isAuthenticated ? <IsAuth /> : <IsNotAuth />;

@@ -25,15 +25,15 @@
 }
 
 .Sidebar li {
-        padding : 5px;
-        width : 100%;
-        text-align: center;
+    padding : 5px;
+    width : 100%;
+    text-align: center;
 }
 
 .Sidebar li:hover {
-        cursor : pointer;
-        background : #292a2b;
-        color : white;
+    cursor : pointer;
+    background : #292a2b;
+    color : white;
 }
 
 .Sidebar li a{

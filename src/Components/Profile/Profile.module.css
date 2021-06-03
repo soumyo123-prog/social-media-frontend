@@ -1,13 +1,14 @@
 .Main {
     height : 100%;
+    display : grid;
+    grid-template-rows: 30px 1fr 30px;
+    grid-template-columns: 1fr;
 }
 
 .Profile_Container_1 {
-    position : absolute;
-    bottom : 30px;
-    top : 30px;
-    left : 50%;
-    transform : translateX(-50%);
+    grid-row-start : 2;
+    grid-row-end : 3;
+    justify-self: center;
     width : 80%;
     padding : 20px;
     overflow : auto;
@@ -98,7 +99,7 @@
     width : 100%;
     margin-top : 50px;
     display : flex;
-    justify-content : space-evenly;
+    justify-content : center;
     align-items: center;
     flex-wrap : wrap;
 }
@@ -106,7 +107,7 @@
 .Post {
     height : 250px;
     width : 250px;
-    margin : 5px;
+    margin : 10px;
     position : relative;
     z-index : 50;
     border-radius: 10px;
@@ -168,8 +169,6 @@
 }
 
 .Add_Post {
-    position : absolute;
-    bottom : 0;
     height : 30px;
     width : 100%;
 }
@@ -195,11 +194,10 @@
     bottom : 0;
     right : 0;
     display : block;
-    width : 50%;
     height : 40px;
     border : 0;
     color : white;
-    background : #5962e3;
+    background : rgba(0,0,0,0.8);
     border-top-left-radius: 5px;
     border-bottom-right-radius: 5px;
     z-index : 80;

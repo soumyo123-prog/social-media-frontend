@@ -1,9 +1,12 @@
 import React from 'react';
 import classes from './Sidebar.module.css';
+import '../../icons-styling.css';
 
 import {connect} from 'react-redux';
 import {withRouter, NavLink} from 'react-router-dom';
 import * as types from '../../Store/Actions/index';
+
+import {GrLogout} from 'react-icons/gr';
 
 let searchContent = "'";
 
@@ -56,13 +59,17 @@ const sidebar = props => {
 				className = {classes.Logout}
 				onClick = {() => props.logoutInit("once",props.token)}
 			>
-				Logout From This Device
+				<GrLogout 
+                    size="1.3em"
+                /> From This Device
 			</li>
 			<li 
 				className = {classes.Logout}
 				onClick = {() => props.logoutInit("all",props.token)}
 			>
-				Logout From all Devices
+				<GrLogout 
+                    size="1.3em"
+                /> Logout From all Devices
 			</li>
 		</ul>
 	)

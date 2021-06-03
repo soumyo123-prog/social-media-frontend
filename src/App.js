@@ -10,7 +10,7 @@ import './App.css';
 const App = (props) => {
 
   useEffect(() => {
-    props.tryAutoSignIn();
+      props.tryAutoSignIn();
   }, []);
 
   return (
