@@ -1,0 +1,121 @@
+.My_Posts {
+    width : 100%;
+    margin-top : 50px;
+    display : flex;
+    justify-content : center;
+    align-items: center;
+    flex-wrap : wrap;
+}
+
+.My_Posts {
+    width : 100%;
+    margin-top : 50px;
+    display : flex;
+    justify-content : center;
+    align-items: center;
+    flex-wrap : wrap;
+}
+
+.Post {
+    height : 250px;
+    width : 250px;
+    margin : 10px;
+    position : relative;
+    z-index : 50;
+    border-radius: 10px;
+}
+
+.Post_Hover {
+    display : none;
+    position : absolute;
+    top : 0;
+    height : 100%;
+    width : 100%;
+    z-index : 70;
+    background : rgba(0,0,0,0.8);
+    color : white;
+}
+
+.Post_Picture {
+    border-radius: 5px;
+    height : 100%;
+    background-repeat: no-repeat;
+    background-size : cover;
+    background-position : center;
+}
+
+.Post_Heading {
+    font-size: 1.2em;
+    font-weight : bold;
+    width : 100%;
+}
+
+.Delete_Post {
+    display : inline-block;
+    background : transparent;
+    color : white;
+    position : absolute;
+    top : 0;
+    right : 0;
+    z-index : 80;
+    border : 0;
+    font-size: 1.2em;
+    scroll-padding : 2px;
+}
+
+.Delete_Post:hover {
+    cursor : pointer;
+}
+
+.Delete_Post:focus {
+    outline : 0;
+}
+
+.Like_Container {
+    width : 50%;
+    height : 40px;
+    position: absolute;
+    bottom : 0;
+    left : 0;
+    padding : 10px;
+}
+
+.FullPost {
+    position : absolute;
+    bottom : 0;
+    right : 0;
+    display : block;
+    height : 40px;
+    border : 0;
+    color : white;
+    background : rgba(0,0,0,0.8);
+    border-top-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    z-index : 80;
+}
+
+.FullPost:hover {
+    cursor : pointer;
+}
+
+.FullPost:focus {
+    outline : 0;
+}
+
+.isNotLiked {
+    height : 100%;
+    display : inline-block;
+    width : 20px;
+    margin-right : 10px;
+    border-radius : 50%;
+}
+
+@media (max-width : 680px) {
+	.Like_Container {
+		width : 70%;
+	}
+
+	.FullPost {
+		width : 30%;
+	}
+}

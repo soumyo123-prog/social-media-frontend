@@ -16,9 +16,9 @@ body
   font-family : 'Ubuntu', sans-serif;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
 	width : 0;
-}
+} */
 
 .App {
   position : absolute;
