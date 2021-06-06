@@ -1,2 +1,3 @@
 # To run this project locally, do the following:
-<h1> THis </h1>
+<div> Clone this repository or download the ZIP file </div>
+<hr>
